@@ -1,0 +1,138 @@
+syntax = "proto3";
+package janction.audioStem.v1;
+
+option go_package = "github.com/janction/audioStem";
+
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+
+
+// Params defines the parameters of the module.
+message Params {
+  cosmos.base.v1beta1.Coin min_worker_staking = 1;
+  int64 max_workers_per_thread = 2;
+  int64 min_validators = 3;
+}
+
+// GenesisState is the state that must be provided at genesis.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [ (gogoproto.nullable) = false ];
+
+  // Video Rendering Task index
+  AudioStemTaskInfo audioStemTaskInfo = 3 [(gogoproto.nullable) = false];
+
+  // List of Video Rendering tasks
+  repeated IndexedAudioStemTask audioStemTaskList = 4 [(gogoproto.nullable) = false];
+  
+  // List of Workers
+  repeated  Worker workers = 5 [(gogoproto.nullable) = false];
+}
+
+
+message Worker {
+  message Reputation {
+    cosmos.base.v1beta1.Coin staked = 1;
+    int64 points = 2;
+    int32 validations = 3;
+    int32 solutions = 4;
+    cosmos.base.v1beta1.Coin winnings = 5 [(gogoproto.nullable) = false];
+    repeated int64 render_durations = 6;
+  }
+
+  string address = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  Reputation reputation = 3;
+  bool enabled = 4;
+  string current_task_id = 5;
+  int32 current_thread_index = 6;
+  string public_ip = 7;
+  string ipfs_id = 8;
+}
+
+
+
+
+/*
+  Video Rendering Task
+  @cid the IPFS CID submitted by a task requester
+*/
+message AudioStemTask {
+  string taskId = 1;
+  string requester = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  string cid = 3;
+  int32 start_frame = 4;
+  int32 end_frame = 5;
+  int32 threadAmount = 6;
+  bool completed = 7;
+  cosmos.base.v1beta1.Coin reward = 8;
+  repeated AudioStemThread  threads = 9;
+}
+
+  /*
+    A Video Rendering Thread is the smallest unit of work for a Task. 
+    Workers will try to complete a thread as soon as possible to submit first a solution
+
+  */
+  message AudioStemThread {
+    string thread_id = 1;
+    string task_id = 2;
+    int64 start_frame = 3;
+    int64 end_frame = 4;
+    bool completed = 5;
+    repeated string workers = 6;
+    Solution solution = 7;
+    repeated Validation validations = 8;
+    int64 average_render_seconds = 9;
+    
+
+    message Solution {
+      string proposed_by = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+      repeated Frame frames = 2;
+      string public_key = 3;
+      string dir = 4;
+      bool accepted = 5;
+    }
+
+    message Validation {
+      string validator = 1[(cosmos_proto.scalar) = "cosmos.AddressString"];
+      repeated Frame frames = 2;
+      string public_key = 3;
+      bool is_reverse = 4;
+    }
+
+    message Frame {
+      string filename = 1;
+      string signature = 2;
+      string cid = 3;
+      string hash = 4;
+      int64 validCount = 5;
+      int64 invalidCount = 6;
+    }
+  }
+
+  // Stores information about the Video Rendering  task 
+  message AudioStemTaskInfo {
+    int64 nextId = 1;
+  }
+  
+  // Stores the Video Rendering Task with the index
+  message IndexedAudioStemTask {
+    string index = 1;
+    AudioStemTask audioStemTask = 2 [(gogoproto.nullable) = false];
+  }
+
+  message AudioStemLogs {
+    message AudioStemLog {
+      enum SEVERITY{
+        INFO = 0;
+        SUCCESS = 1;
+        ERROR = 2;
+      }
+        string log = 2;
+        int64 timestamp = 3;
+        SEVERITY severity = 4;
+    }
+    string threadId = 1;
+    repeated AudioStemLog logs =2;
+}

@@ -1,0 +1,141 @@
+syntax = "proto3";
+package janction.audioStem.v1;
+
+option go_package = "github.com/janction/audioStem";
+
+import "cosmos/msg/v1/msg.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "gogoproto/gogo.proto";
+import "janction/audioStem/v1/types.proto";
+import "cosmos_proto/cosmos.proto";
+import "tendermint/crypto/keys.proto";
+
+// Msg defines the module Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  // CreateGame create a game.
+  rpc CreateAudioStemTask(MsgCreateAudioStemTask)
+    returns (MsgCreateAudioStemTaskResponse);
+  
+  // Adds a new worker
+  rpc AddWorker(MsgAddWorker)
+    returns (MsgAddWorkerResponse);
+
+  rpc SubscribeWorkerToTask(MsgSubscribeWorkerToTask) returns (MsgSubscribeWorkerToTaskResponse);
+
+
+  // Propose a solution for the test of the nodes to validate
+  rpc ProposeSolution(MsgProposeSolution) returns (MsgProposeSolutionResponse);
+  // Propose a solution for the test of the nodes to validate
+  rpc SubmitValidation(MsgSubmitValidation) returns (MsgSubmitValidationResponse);
+  // Propose a solution for the test of the nodes to validate
+  rpc RevealSolution(MsgRevealSolution) returns (MsgRevealSolutionResponse);
+
+  // Submits the solution to IPFS
+  rpc SubmitSolution(MsgSubmitSolution) returns (MsgSubmitSolutionResponse);
+  
+}
+
+// MsgCreateGame defines the Msg/CreateGame request type.
+message MsgCreateAudioStemTask {
+  option (cosmos.msg.v1.signer) = "creator";
+
+  // creator is the message sender.
+  string creator = 1;
+  string cid = 2 ;
+  int32 startFrame = 3 ;
+  int32 endFrame = 4 ;
+  int32 threads = 5;
+  cosmos.base.v1beta1.Coin reward = 6;
+}
+
+// MsgCreateGameResponse defines the Msg/CreateGame response type.
+message MsgCreateAudioStemTaskResponse {
+    string task_id = 1;
+}
+
+message MsgAddWorker {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1 ;
+  string public_ip = 2;
+  string ipfs_id = 3;
+  cosmos.base.v1beta1.Coin stake = 4 [(gogoproto.nullable) = false];;
+
+}
+
+message MsgAddWorkerResponse {
+  bool ok = 1;
+  string message = 2;
+}
+
+message MsgSubscribeWorkerToTask {
+  option (cosmos.msg.v1.signer) = "address";
+  string address = 1;
+  string taskId = 2;
+  string threadId = 3;
+}
+
+message MsgSubscribeWorkerToTaskResponse {
+  string threadId = 1;
+}
+
+// Msg to Propose a solution to an specific thread
+// Actual solution is a map of hashes
+message MsgProposeSolution {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string taskId = 2;
+  string threadId = 3;
+  string public_key = 4;
+  repeated string signatures = 5;
+}
+
+
+
+// no response needed to a proposed solution
+message MsgProposeSolutionResponse {
+  
+}
+
+// Msg to Propose a solution to an specific thread
+// Actual solution is a map of hashes
+message MsgRevealSolution {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string taskId = 2;
+  string threadId = 3;
+  repeated string frames = 4;
+}
+
+
+
+// no response needed to a proposed solution
+message MsgRevealSolutionResponse {
+  
+}
+
+message MsgSubmitValidation {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string taskId = 2;
+  string threadId = 3;
+  string public_key = 4;
+  repeated string signatures = 5;
+}
+
+message MsgSubmitValidationResponse {
+  
+}
+
+message MsgSubmitSolution {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string taskId = 2;
+  string threadId = 3;
+  string dir = 4;
+  int64 average_render_seconds = 5;
+}
+message MsgSubmitSolutionResponse {
+  
+}

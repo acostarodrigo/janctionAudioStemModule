@@ -1,0 +1,76 @@
+syntax = "proto3";
+package janction.audioStem.v1;
+
+option go_package = "github.com/janction/audioStem";
+
+import "janction/audioStem/v1/types.proto";
+import "google/api/annotations.proto";
+import "cosmos/query/v1/query.proto";
+import "gogoproto/gogo.proto";
+
+// Query defines the module Query service.
+service Query {
+  // GetAudioStemTask returns the task based on the taskId
+  rpc GetAudioStemTask(QueryGetAudioStemTaskRequest) returns (QueryGetAudioStemTaskResponse) {
+    option (cosmos.query.v1.module_query_safe) = true;
+    option (google.api.http).get =
+      "/janction/audioStem/v1/{index}";
+  }
+  
+  rpc GetAudioStemLogs(QueryGetAudioStemLogsRequest) returns (QueryGetAudioStemLogsResponse) {
+    option (cosmos.query.v1.module_query_safe) = true;
+    option (google.api.http).get =
+      "/janction/audioStem/v1/{threadId}";
+  }
+
+  rpc GetWorker(QueryGetWorkerRequest) returns (QueryGetWorkerResponse) {
+    option (cosmos.query.v1.module_query_safe) = true;
+    option (google.api.http).get =
+      "/janction/audioStem/v1/{worker}";
+  }
+  rpc GetPendingAudioStemTasks(QueryGetPendingAudioStemTaskRequest) returns (QueryGetPendingAudioStemTaskResponse){
+  }
+
+}
+
+// QueryGetGameRequest is the request type for the Query/GetGame RPC
+// method.
+message QueryGetAudioStemTaskRequest {
+  string index = 1;
+}
+
+// QueryGetGameResponse is the response type for the Query/GetGame RPC
+// method.
+message QueryGetAudioStemTaskResponse {
+  // Game defines the game at the requested index.
+  AudioStemTask audio_stem_task = 1;
+}
+
+// QueryGetGameRequest is the request type for the Query/GetGame RPC
+// method.
+message QueryGetAudioStemLogsRequest {
+  string threadId = 1;
+}
+
+// QueryGetGameResponse is the response type for the Query/GetGame RPC
+// method.
+message QueryGetAudioStemLogsResponse {
+  // Game defines the game at the requested index.
+  AudioStemLogs audio_stem_logs = 1;
+}
+
+message QueryGetPendingAudioStemTaskRequest {
+  
+}
+
+message QueryGetPendingAudioStemTaskResponse {
+  repeated AudioStemTask audio_stem_tasks = 1;
+}
+
+message QueryGetWorkerRequest {
+  string worker = 1;
+}
+
+message QueryGetWorkerResponse {
+  Worker worker = 1;
+}
