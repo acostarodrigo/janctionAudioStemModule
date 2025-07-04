@@ -1,3 +1,3 @@
-# Janction Layer One Blockchain - Video Rendering module
+# Janction Layer One Blockchain - Audio Stem module
 
 

@@ -13,16 +13,16 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "GetAudioStemTask",
-					Use:       "get-video-rendering-task index",
-					Short:     "Get the current value of the Video Rendering task at index",
+					Use:       "get-audio-stem-task index",
+					Short:     "Get the current value of the Audio Stem task at index",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
 						{ProtoField: "index"},
 					},
 				},
 				{
 					RpcMethod: "GetPendingAudioStemTasks",
-					Use:       "get-pending-video-rendering-tasks",
-					Short:     "Gets the pending video rendering tasks",
+					Use:       "get-pending-audio-stem-tasks",
+					Short:     "Gets the pending audio stem tasks",
 				},
 			},
 		},
@@ -31,22 +31,22 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 			RpcCommandOptions: []*autocliv1.RpcCommandOptions{
 				{
 					RpcMethod: "CreateAudioStemTask",
-					Use:       "create-video-rendering-task [cid] [startFrame] [endFrame] [threads] [reward]",
-					Short:     "Creates a new video Rendering task",
+					Use:       "create-audio-stem-task [cid] [amountFiles] [instrument] [mp3] [reward]",
+					Short:     "Creates a new audio stem task",
 					Long:      "", // TODO Add long
 					Example:   "", // TODO add exampe
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
 						{ProtoField: "cid"},
-						{ProtoField: "startFrame"},
-						{ProtoField: "endFrame"},
-						{ProtoField: "threads"},
+						{ProtoField: "amount_files"},
+						{ProtoField: "instrument"},
+						{ProtoField: "mp3"},
 						{ProtoField: "reward"},
 					},
 				},
 				{
 					RpcMethod: "AddWorker",
 					Use:       "add-worker [public_ip] [ipfs_id] [stake]--from [workerAddress]",
-					Short:     "Registers a new worker that will perform video rendering tasks",
+					Short:     "Registers a new worker that will perform audio stem tasks",
 					Long:      "", // TODO Add long
 					Example:   "", // TODO add exampe
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
@@ -90,7 +90,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 						{ProtoField: "taskId"},
 						{ProtoField: "threadId"},
 						{ProtoField: "dir", Varargs: false},
-						{ProtoField: "average_render_seconds"},
+						{ProtoField: "average_stem_seconds"},
 					},
 				},
 				{
@@ -115,7 +115,7 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
 						{ProtoField: "taskId"},
 						{ProtoField: "threadId"},
-						{ProtoField: "frames", Varargs: true},
+						{ProtoField: "stems", Varargs: true},
 					},
 				},
 			},

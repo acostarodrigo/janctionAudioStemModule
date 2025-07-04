@@ -4,7 +4,6 @@ import (
 	"context"
 	"slices"
 	"strconv"
-	"strings"
 
 	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/types"
@@ -13,7 +12,6 @@ import (
 
 	"github.com/janction/audioStem"
 	"github.com/janction/audioStem/audioStemLogger"
-	audioStemCrypto "github.com/janction/audioStem/crypto"
 	"github.com/janction/audioStem/ipfs"
 )
 
@@ -30,7 +28,7 @@ func NewMsgServerImpl(keeper Keeper) audioStem.MsgServer {
 
 // CreateGame defines the handler for the MsgCreateAudioStemTask message.
 func (ms msgServer) CreateAudioStemTask(ctx context.Context, msg *audioStem.MsgCreateAudioStemTask) (*audioStem.MsgCreateAudioStemTaskResponse, error) {
-	audioStemLogger.Logger.Info("CreateAudioStemTask -  creator: %s, cid: %s, startFrame: %v, endFrame: %v, threads: %v, reward: %s", msg.Creator, msg.Cid, msg.StartFrame, msg.EndFrame, msg.Threads, msg.Reward)
+	audioStemLogger.Logger.Info("CreateAudioStemTask -  creator: %s, cid: %s, amountFiles: %v, instrument: %s, mp3: %v, reward: %s", msg.Creator, msg.Cid, msg.AmountFiles, msg.Instrument, msg.Mp3, msg.Reward)
 
 	// TODO had validations about the parameters
 	taskInfo, err := ms.k.AudioStemTaskInfo.Get(ctx)
@@ -56,7 +54,7 @@ func (ms msgServer) CreateAudioStemTask(ctx context.Context, msg *audioStem.MsgC
 	nextId++
 	ms.k.AudioStemTaskInfo.Set(ctx, audioStem.AudioStemTaskInfo{NextId: nextId})
 
-	videoTask := audioStem.AudioStemTask{TaskId: taskId, Requester: msg.Creator, Cid: msg.Cid, StartFrame: msg.StartFrame, EndFrame: msg.EndFrame, Completed: false, ThreadAmount: msg.Threads, Reward: msg.Reward}
+	videoTask := audioStem.AudioStemTask{TaskId: taskId, Requester: msg.Creator, Cid: msg.Cid, AmountFiles: msg.AmountFiles, Instrument: msg.Instrument, Completed: false, Mp3: msg.Mp3, Reward: msg.Reward}
 	threads := videoTask.GenerateThreads(taskId)
 	videoTask.Threads = threads
 
@@ -211,62 +209,12 @@ func (ms msgServer) ProposeSolution(ctx context.Context, msg *audioStem.MsgPropo
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "Task %s is not valid to accept solutions", msg.TaskId)
 	}
 
-	for i, v := range task.Threads {
-		// TODO threads might be better as map instead of slice
-		if v.ThreadId == msg.ThreadId {
-			if v.Solution != nil {
-				audioStemLogger.Logger.Error("thread %s already has a solution", msg.ThreadId)
-				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "thread %s already has a solution", msg.ThreadId)
-			}
-			// worker must be a valid registered worker in the thread with a solution
-			if !slices.Contains(v.Workers, msg.Creator) {
-				audioStemLogger.Logger.Error("Worker %s is not valid at thread %s", msg.Creator, msg.ThreadId)
-				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "Worker %s is not valid at thread %s", msg.Creator, msg.ThreadId)
-			}
-
-			// solution len must be equal to the frames generated
-			if len(msg.Signatures) != (int(v.EndFrame) - int(v.StartFrame) + 1) {
-				audioStemLogger.Logger.Error("amount of files in solution is incorrect, %v ", len(msg.Signatures))
-				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "amount of files in solution is incorrect, %v ", len(msg.Signatures))
-			}
-
-			// we have passed all validations, lets add the solution to the thread
-			var frames []*audioStem.AudioStemThread_Frame
-
-			for _, val := range msg.Signatures {
-				parts := strings.SplitN(val, "=", 2)
-
-				if err != nil {
-					audioStemLogger.Logger.Error("unable to decode signature from msg %s: %s", parts[1], err.Error())
-					return nil, err
-				}
-
-				frame := audioStem.AudioStemThread_Frame{Filename: parts[0], Signature: parts[1]}
-				frames = append(frames, &frame)
-			}
-
-			_, err := audioStemCrypto.DecodePublicKeyFromCLI(msg.PublicKey)
-
-			if err != nil {
-				audioStemLogger.Logger.Error("unable to decode publicKey from msg %s: %s", msg.PublicKey, err.Error())
-				return nil, err
-			}
-			task.Threads[i].Solution = &audioStem.AudioStemThread_Solution{ProposedBy: msg.Creator, Frames: frames, PublicKey: msg.PublicKey}
-			err = ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
-
-			if err != nil {
-				audioStemLogger.Logger.Error("unable to propose solution %s", err.Error())
-				return nil, err
-			}
-		}
-	}
-
 	return &audioStem.MsgProposeSolutionResponse{}, nil
 }
 
 // TODO Implement
 func (ms msgServer) RevealSolution(ctx context.Context, msg *audioStem.MsgRevealSolution) (*audioStem.MsgRevealSolutionResponse, error) {
-	audioStemLogger.Logger.Info("RevealSolution - creator: %s, taskId: %s, threadId: %s, frames: %s", msg.Creator, msg.TaskId, msg.ThreadId, msg.Frames)
+	audioStemLogger.Logger.Info("RevealSolution - creator: %s, taskId: %s, threadId: %s, frames: %s", msg.Creator, msg.TaskId, msg.ThreadId, msg.ThreadId)
 
 	// Solution must be from a worker on the thread
 	task, err := ms.k.AudioStemTasks.Get(ctx, msg.TaskId)
@@ -314,32 +262,6 @@ func (ms msgServer) RevealSolution(ctx context.Context, msg *audioStem.MsgReveal
 	if !slices.Contains(thread.Workers, msg.Creator) {
 		audioStemLogger.Logger.Error("worker is not working on thread")
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "worker is not working on thread")
-	}
-
-	// cids amount must be equal to the amount of frames
-	if len(msg.Frames) != len(thread.Solution.Frames) {
-		audioStemLogger.Logger.Error("invalid amount of frames for the solution")
-		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "invalid amount of cids for the solution")
-	}
-
-	solution := audioStem.FromCliToFrames(msg.Frames)
-	for _, frame := range solution {
-		idx := slices.IndexFunc(thread.Solution.Frames, func(f *audioStem.AudioStemThread_Frame) bool { return f.Filename == frame.Filename })
-		if idx < 0 {
-			audioStemLogger.Logger.Error("Unable to find frame with filename %s in solution", frame.String())
-			return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "frame %s not found in solution", frame)
-		}
-		// we reveal the solution
-		thread.Solution.Frames[idx].Cid = frame.Cid
-		thread.Solution.Frames[idx].Hash = frame.Hash
-	}
-
-	// We verify all frames in the solution have a CID revealed
-	for _, frame := range thread.Solution.Frames {
-		if frame.Cid == "" || frame.Hash == "" {
-			audioStemLogger.Logger.Error("Frame %s doesn't have a CID or Hash revelaed", frame.Filename)
-			return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "Frame %s doesn't have a CID or Hash revelaed", frame.Filename)
-		}
 	}
 
 	task.Threads[worker.CurrentThreadIndex] = thread
@@ -392,36 +314,18 @@ func (ms msgServer) SubmitValidation(ctx context.Context, msg *audioStem.MsgSubm
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "worker is not working on thread")
 	}
 
-	var frames []*audioStem.AudioStemThread_Frame
-	for _, signatures := range msg.Signatures {
-		parts := strings.SplitN(signatures, "=", 2)
-
-		frame := audioStem.AudioStemThread_Frame{Filename: parts[0], Signature: parts[1]}
-		frames = append(frames, &frame)
-	}
-
-	validation := audioStem.AudioStemThread_Validation{Validator: msg.Creator, IsReverse: thread.IsReverse(worker.Address), Frames: frames, PublicKey: msg.PublicKey}
-	task.Threads[worker.CurrentThreadIndex].Validations = append(thread.Validations, &validation)
-	ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
-
-	// we release the worker since there is nothing else for him to do on this thread
-	if worker.Address != thread.Solution.ProposedBy {
-		worker.ReleaseValidator()
-		ms.k.Workers.Set(ctx, msg.Creator, worker)
-	}
-
 	return &audioStem.MsgSubmitValidationResponse{}, nil
 }
 
 func (ms msgServer) SubmitSolution(ctx context.Context, msg *audioStem.MsgSubmitSolution) (*audioStem.MsgSubmitSolutionResponse, error) {
-	audioStemLogger.Logger.Info("SubmitSolution - creator: %s, taskId: %s, threadId: %s, Dir: %s, AverageRenderSeconds: %v", msg.Creator, msg.TaskId, msg.ThreadId, msg.Dir, msg.AverageRenderSeconds)
+	audioStemLogger.Logger.Info("SubmitSolution - creator: %s, taskId: %s, threadId: %s, Dir: %s, AverageRenderSeconds: %v", msg.Creator, msg.TaskId, msg.ThreadId, msg.Dir, msg.TaskId)
 
 	task, err := ms.k.AudioStemTasks.Get(ctx, msg.TaskId)
 	if err != nil {
 		audioStemLogger.Logger.Error("Getting Task: %s", err.Error())
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "provided task doesn't exists")
 	}
-	for i, thread := range task.Threads {
+	for _, thread := range task.Threads {
 		if thread.ThreadId == msg.ThreadId {
 
 			if thread.Solution.ProposedBy != msg.Creator {
@@ -440,13 +344,13 @@ func (ms msgServer) SubmitSolution(ctx context.Context, msg *audioStem.MsgSubmit
 			// }
 
 			// solution is verified so we pay the winner
-			addr, _ := types.AccAddressFromBech32(msg.Creator)
-			payment := task.GetWinnerReward()
-			ms.k.BankKeeper.SendCoinsFromModuleToAccount(ctx, audioStem.ModuleName, addr, types.NewCoins(payment))
-			task.Threads[i].Solution.Dir = msg.Dir
-			task.Threads[i].AverageRenderSeconds = msg.AverageRenderSeconds
-			task.Threads[i].Completed = true
-			ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
+			// addr, _ := types.AccAddressFromBech32(msg.Creator)
+			// payment := task.GetWinnerReward()
+			// ms.k.BankKeeper.SendCoinsFromModuleToAccount(ctx, audioStem.ModuleName, addr, types.NewCoins(payment))
+			// task.Threads[i].Solution.Dir = msg.Dir
+			// task.Threads[i].AverageRenderSeconds = msg.AverageRenderSeconds
+			// task.Threads[i].Completed = true
+			// ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
 
 			// should we pay here the validators?
 			// TODO Implement
@@ -465,9 +369,9 @@ func (ms msgServer) SubmitSolution(ctx context.Context, msg *audioStem.MsgSubmit
 
 			// we increase the reputation of the winner
 			worker, _ := ms.k.Workers.Get(ctx, msg.Creator)
-			worker.DeclareWinner(payment)
+			// worker.DeclareWinner(payment)
 			// we added this duration to the slice of average durations.
-			worker.Reputation.RenderDurations = append(worker.Reputation.RenderDurations, msg.AverageRenderSeconds)
+			// worker.Reputation.RenderDurations = append(worker.Reputation.RenderDurations, msg.AverageRenderSeconds)
 			ms.k.Workers.Set(ctx, msg.Creator, worker)
 			break
 		}

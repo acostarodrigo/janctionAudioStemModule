@@ -3,13 +3,10 @@ package vm
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"runtime"
-	"strconv"
 	"strings"
 	"time"
 
@@ -18,7 +15,7 @@ import (
 )
 
 func IsContainerRunning(ctx context.Context, threadId string) bool {
-	name := fmt.Sprintf("myBlender%s", threadId)
+	name := fmt.Sprintf("janctionstem%s", threadId)
 
 	// Command to check for running containers
 	cmd := exec.CommandContext(ctx, "docker", "ps", "--filter", fmt.Sprintf("name=%s", name), "--format", "{{.Names}}")
@@ -34,25 +31,11 @@ func IsContainerRunning(ctx context.Context, threadId string) bool {
 	return containerName == name
 }
 
-func RenderVideo(ctx context.Context, cid string, start int64, end int64, id string, path string, reverse bool, db *db.DB) {
-	if reverse {
-		for i := end; i >= start; i-- {
-			audioStemLogger.Logger.Info("Rendering frame %v in reverse", i)
-			renderVideoFrame(ctx, cid, i, id, path, db)
-		}
-	} else {
-		for i := start; i <= end; i++ {
-			audioStemLogger.Logger.Info("Rendering frame %v", i)
-			renderVideoFrame(ctx, cid, i, id, path, db)
-		}
-	}
-}
-
-func renderVideoFrame(ctx context.Context, cid string, frameNumber int64, id string, path string, db *db.DB) error {
-	n := "myBlender" + id
+func StemAudio(ctx context.Context, id string, filename string, instrument string, mp3 bool, path string, db *db.DB) error {
+	n := "janctionstem" + id
 
 	started := time.Now().Unix()
-	db.AddLogEntry(id, fmt.Sprintf("Started rendering frame %v...", frameNumber), started, 0)
+	db.AddLogEntry(id, fmt.Sprintf("Started stem file %v...", filename), started, 0)
 
 	// Check if the container exists using `docker ps -a`
 	checkCmd := exec.CommandContext(ctx, "docker", "ps", "-a", "--filter", fmt.Sprintf("name=%s", n), "--format", "{{.Names}}")
@@ -71,49 +54,47 @@ func renderVideoFrame(ctx context.Context, cid string, frameNumber int64, id str
 	}
 
 	// Construct the bind path and command
-	bindPath := fmt.Sprintf("%s:/workspace", path)
+	bindPathInput := fmt.Sprintf("%s:/data/input", path)
+	bindPathOutput := fmt.Sprintf("%s:/data/output", path)
+	audioPath := fmt.Sprintf("/data/input/%s", filename)
 
-	var blenderArgs []string
-	if isARM64() {
-		blenderArgs = append(blenderArgs, "blender")
-	}
-	blenderArgs = append(blenderArgs, "--background")
-	blenderArgs = append(blenderArgs, fmt.Sprintf("/workspace/%s", cid))
-	blenderArgs = append(blenderArgs, "--engine")
-	blenderArgs = append(blenderArgs, "CYCLES")
+	var stemArgs []string
+	stemArgs = append(stemArgs, "-n")
+	stemArgs = append(stemArgs, "htdemucs")
+	stemArgs = append(stemArgs, "--out")
+	stemArgs = append(stemArgs, "/data/output")
+	stemArgs = append(stemArgs, "--shifts")
+	stemArgs = append(stemArgs, "1")
 
-	blenderArgs = append(blenderArgs, "--render-output")
-	blenderArgs = append(blenderArgs, "/workspace/output/frame_######")
-	blenderArgs = append(blenderArgs, "--render-format")
-	blenderArgs = append(blenderArgs, "PNG")
-	blenderArgs = append(blenderArgs, "--render-frame")
-	blenderArgs = append(blenderArgs, strconv.FormatInt(frameNumber, 10))
+	stemArgs = append(stemArgs, "--overlap")
+	stemArgs = append(stemArgs, "0.25")
+	stemArgs = append(stemArgs, "-j")
+	stemArgs = append(stemArgs, "1")
+	// stemArgs = append(stemArgs, fmt.Sprintf("\"%s\"", audioPath))
+	stemArgs = append(stemArgs, audioPath) // no quotes
 
 	var dockerArgs []string
 	dockerArgs = append(dockerArgs, "run")
 
+	dockerArgs = append(dockerArgs, "--rm")
+	// dockerArgs = append(dockerArgs, "-it")
 	dockerArgs = append(dockerArgs, "--name")
 	dockerArgs = append(dockerArgs, n)
 	dockerArgs = append(dockerArgs, "-v")
-	dockerArgs = append(dockerArgs, bindPath)
-	dockerArgs = append(dockerArgs, "-d")
+	dockerArgs = append(dockerArgs, bindPathInput)
+	dockerArgs = append(dockerArgs, "-v")
+	dockerArgs = append(dockerArgs, bindPathOutput)
 
-	// TODO if on Mac, we use another image that is non deterministic
-	if isARM64() {
-		dockerArgs = append(dockerArgs, "blender_render")
-	} else {
-		// if non Mac, this image generates deterministics results
-		dockerArgs = append(dockerArgs, "blendergrid/blender")
-	}
-	dockerArgs = append(dockerArgs, blenderArgs...)
+	dockerArgs = append(dockerArgs, "janction/audio-stem:latest")
+	dockerArgs = append(dockerArgs, stemArgs...)
 
 	// Create and start the container
 	runCmd := exec.CommandContext(ctx, "docker", dockerArgs...)
 	audioStemLogger.Logger.Info("Starting docker: %s", runCmd.String())
-	err = runCmd.Run()
+	output, err = runCmd.CombinedOutput()
 	if err != nil {
 		db.AddLogEntry(id, fmt.Sprintf("Error in creating the container. %s", err.Error()), started, 1)
-		audioStemLogger.Logger.Error("failed to create and start container: %s", err.Error())
+		audioStemLogger.Logger.Error("failed to run container: %s\nOutput:\n%s", err.Error(), string(output))
 		return fmt.Errorf("failed to create and start container: %w", err)
 	}
 
@@ -138,22 +119,22 @@ func renderVideoFrame(ctx context.Context, cid string, frameNumber int64, id str
 	RemoveContainer(ctx, n)
 
 	// Verify the frame exists and log
-	frameFile := FormatFrameFilename(int(frameNumber))
-	framePath := filepath.Join(path, "output", frameFile)
-	finish := time.Now().Unix()
-	difference := time.Unix(finish, 0).Sub(time.Unix(started, 0))
-	if _, err := os.Stat(framePath); errors.Is(err, os.ErrNotExist) {
-		db.AddLogEntry(id, fmt.Sprintf("Error while rendering frame %v. %s file is not there", frameNumber, framePath), started, 2)
-		renderVideoFrame(ctx, cid, frameNumber, id, path, db)
-	} else {
-		// we capture the duration of the rendering
-		duration := int(difference.Seconds())
-		// we add the log
-		db.AddLogEntry(id, fmt.Sprintf("Successfully rendered frame %v in %v seconds.", frameNumber, duration), finish, 1)
-		// and record the duration for the frame
-		audioStemLogger.Logger.Info("Recorded duration for frame %v: %v seconds", int(frameNumber), duration)
-		db.AddRenderDuration(id, int(frameNumber), duration)
-	}
+	// frameFile := FormatFrameFilename(int(frameNumber))
+	// framePath := filepath.Join(path, "htdemucs", frameFile)
+	// finish := time.Now().Unix()
+	// difference := time.Unix(finish, 0).Sub(time.Unix(started, 0))
+	// if _, err := os.Stat(framePath); errors.Is(err, os.ErrNotExist) {
+	// 	db.AddLogEntry(id, fmt.Sprintf("Error while rendering frame %v. %s file is not there", frameNumber, framePath), started, 2)
+	// 	renderVideoFrame(ctx, cid, frameNumber, id, path, db)
+	// } else {
+	// 	// we capture the duration of the rendering
+	// 	duration := int(difference.Seconds())
+	// 	// we add the log
+	// 	db.AddLogEntry(id, fmt.Sprintf("Successfully rendered frame %v in %v seconds.", frameNumber, duration), finish, 1)
+	// 	// and record the duration for the frame
+	// 	audioStemLogger.Logger.Info("Recorded duration for frame %v: %v seconds", int(frameNumber), duration)
+	// 	db.AddRenderDuration(id, int(frameNumber), duration)
+	// }
 	return nil
 }
 

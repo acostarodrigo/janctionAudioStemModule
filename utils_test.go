@@ -110,7 +110,7 @@ func TestExecuteCli(t *testing.T) {
 			defer patchCmd.Unpatch()
 
 			// Monkey patch the Output method of *exec.Cmd to simulate CLI output or error
-			patchOutput := monkey.PatchInstanceMethod(reflect.TypeOf(&exec.Cmd{}), "Output", tt.mockOutput)
+			patchOutput := monkey.PatchInstanceMethod(reflect.TypeOf(&exec.Cmd{}), "htdemucs", tt.mockOutput)
 			defer patchOutput.Unpatch()
 
 			// Execute the CLI function

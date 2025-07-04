@@ -179,7 +179,7 @@ func (am AppModule) BeginBlock(ctx context.Context) error {
 			dbThread, _ := k.DB.ReadThread(thread.ThreadId)
 			audioStemLogger.Logger.Info("local thread %s is: downloadStarted: %s, downloadCompleted: %s, workStarted: %s, workCompleted: %s, solutionProposed: %s, verificationStarted: %s, solutionRevealed: %s, submitionStarted: %s", dbThread.ID, strconv.FormatBool(dbThread.DownloadStarted), strconv.FormatBool(dbThread.DownloadCompleted), strconv.FormatBool(dbThread.WorkStarted), strconv.FormatBool(dbThread.WorkCompleted), strconv.FormatBool(dbThread.SolutionProposed), strconv.FormatBool(dbThread.VerificationStarted), strconv.FormatBool(dbThread.SolutionRevealed), strconv.FormatBool(dbThread.SubmitionStarted))
 
-			workPath := filepath.Join(k.Configuration.RootPath, "renders", thread.ThreadId)
+			workPath := filepath.Join(k.Configuration.RootPath, "audioStems", thread.ThreadId)
 
 			if !thread.Completed && !dbThread.DownloadStarted {
 				audioStemLogger.Logger.Info("thread %v of task %v started", thread.ThreadId, task.TaskId)
@@ -229,7 +229,7 @@ func (am AppModule) BeginBlock(ctx context.Context) error {
 	am.keeper.AudioStemTasks.Walk(ctx, nil, func(key string, task audioStem.AudioStemTask) (bool, error) {
 		if !task.Completed {
 			for _, thread := range task.Threads {
-				if (len(thread.Validations) > 1 || len(thread.Validations) == len(thread.Workers)) && !thread.Completed && thread.Solution != nil && !thread.Solution.Accepted && len(thread.Solution.Frames) > 0 && thread.Solution.Frames[0].Hash != "" {
+				if (len(thread.Validations) > 1 || len(thread.Validations) == len(thread.Workers)) && !thread.Completed && thread.Solution != nil && !thread.Solution.Accepted {
 					audioStemLogger.Logger.Info("Solution revealed, we verify it for thread %s ", thread.ThreadId)
 
 					thread.EvaluateVerifications()
@@ -301,7 +301,7 @@ func (am AppModule) EndBlock(ctx context.Context) error {
 					}
 				}
 			} else {
-				audioStemLogger.Logger.Info("No video rendering tasks available for me to work on")
+				audioStemLogger.Logger.Info("No audio Stem tasks available for me to work on")
 			}
 		}
 	}

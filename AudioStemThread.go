@@ -3,7 +3,7 @@ package audioStem
 import (
 	"context"
 	fmt "fmt"
-	"os/exec"
+	"os"
 	"path"
 	"path/filepath"
 	"slices"
@@ -23,25 +23,79 @@ import (
 func (t *AudioStemThread) StartWork(ctx context.Context, worker string, cid string, path string, db *db.DB) error {
 	// ctx := context.Background()
 
-	cmd := exec.CommandContext(ctx, "make", "run", "track=sample2.mp3")
-	_, err := cmd.Output()
-	if err != nil {
-		audioStemLogger.Logger.Error("Error executing Docker command: %v\n", err)
+	if err := db.UpdateThread(t.ThreadId, false, false, true, false, false, false, false, false); err != nil {
+		audioStemLogger.Logger.Error("Unable to update thread status, err: %s", err.Error())
 	}
+
+	isRunning := vm.IsContainerRunning(ctx, t.ThreadId)
+	if !isRunning {
+		// task is not running,
+
+		// we remove the container just in case it already exists.
+		vm.RemoveContainer(ctx, "janctionstem"+t.ThreadId)
+
+		audioStemLogger.Logger.Info("No solution for thread %s. Starting work", t.ThreadId)
+		// we don't have a solution, start working
+		started := time.Now().Unix()
+		ipfs.EnsureIPFSRunning()
+		db.AddLogEntry(t.ThreadId, fmt.Sprintf("Started downloading IPFS file %s...", cid), started, 0)
+		if err := db.UpdateThread(t.ThreadId, true, false, true, false, false, false, false, false); err != nil {
+			audioStemLogger.Logger.Error("Unable to update thread status, err: %s", err.Error())
+		}
+		err := ipfs.IPFSGet(cid, path)
+		if err != nil {
+			if err := db.UpdateThread(t.ThreadId, true, false, true, false, false, false, false, false); err != nil {
+				audioStemLogger.Logger.Error("Unable to update thread status, err: %s", err.Error())
+			}
+			db.AddLogEntry(t.ThreadId, fmt.Sprintf("Error getting IPFS file %s. %s", cid, err.Error()), started, 2)
+			audioStemLogger.Logger.Error("Error getting cid %s", cid)
+			return err
+		}
+		// download completed successfuly
+		if err := db.UpdateThread(t.ThreadId, true, true, true, false, false, false, false, false); err != nil {
+			audioStemLogger.Logger.Error("Unable to update thread status, err: %s", err.Error())
+		}
+
+		finish := time.Now().Unix()
+		difference := time.Unix(finish, 0).Sub(time.Unix(started, 0))
+		db.AddLogEntry(t.ThreadId, fmt.Sprintf("Successfully downloaded IPFS file %s in %v seconds.", cid, int(difference.Seconds())), finish, 0)
+
+		// we start rendering
+		vm.StemAudio(ctx, t.ThreadId, cid, t.Instrument, t.Mp3, path, db)
+
+		rendersPath := filepath.Join(path, "htdemucs")
+		_, err = os.Stat(rendersPath)
+		finish = time.Now().Unix()
+		difference = time.Unix(finish, 0).Sub(time.Unix(started, 0))
+		if err != nil {
+			// output path was not created so no rendering happened. we will start over
+			audioStemLogger.Logger.Error("Unable to complete rendering of task, retrying. No files at %s", rendersPath)
+
+			db.UpdateThread(t.ThreadId, true, true, false, false, false, false, false, false)
+			return nil
+		}
+		files, _ := os.ReadDir(rendersPath)
+		if len(files) != 4 {
+			db.UpdateThread(t.ThreadId, true, true, false, false, false, false, false, false)
+			audioStemLogger.Logger.Error("Not the amount we expected. retrying. Amount of files %v", len(files))
+			return nil
+		}
+		db.UpdateThread(t.ThreadId, true, true, true, true, false, false, false, false)
+		db.AddLogEntry(t.ThreadId, fmt.Sprintf("Thread %s completed succesfully in %v seconds.", t.ThreadId, int(difference.Seconds())), finish, 1)
+	} else {
+		// Container is running, so we update worker status
+		// if worker status is idle, we change it
+		audioStemLogger.Logger.Info("Work for thread %s is already going", t.ThreadId)
+
+	}
+
 	return nil
 }
 
 func (t AudioStemThread) ProposeSolution(codec codec.Codec, alias, workerAddress string, rootPath string, db *db.DB) error {
 	db.UpdateThread(t.ThreadId, true, true, true, true, true, false, false, false)
 
-	output := path.Join(rootPath, "renders", t.ThreadId, "output")
-	count := vm.CountFilesInDirectory(output)
-
-	if count != (int(t.EndFrame)-int(t.StartFrame))+1 {
-		audioStemLogger.Logger.Error("not enought local frames to propose solution: %v", count)
-		db.UpdateThread(t.ThreadId, true, true, true, true, false, false, false, false)
-		return nil
-	}
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
 
 	hashes, err := GenerateDirectoryFileHashes(output)
 	if err != nil {
@@ -107,7 +161,7 @@ func (t AudioStemThread) ProposeSolution(codec codec.Codec, alias, workerAddress
 func (t AudioStemThread) SubmitVerification(codec codec.Codec, alias, workerAddress string, rootPath string, db *db.DB) error {
 	// we will verify any file we already have rendered.
 	db.UpdateThread(t.ThreadId, true, true, true, true, true, true, false, false)
-	output := path.Join(rootPath, "renders", t.ThreadId, "output")
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
 	files := vm.CountFilesInDirectory(output)
 	if files == 0 {
 		audioStemLogger.Logger.Error("found %v files in path %s", files, output)
@@ -116,7 +170,7 @@ func (t AudioStemThread) SubmitVerification(codec codec.Codec, alias, workerAddr
 	}
 
 	// Before we calculate verification, we need to make sure we have enought rendered files to submit one.
-	totalFiles := t.EndFrame - t.StartFrame
+	totalFiles := 1
 	threshold := float64(totalFiles) * 0.2 // TODO this percentage should be in params
 
 	if float64(files) > threshold {
@@ -252,11 +306,11 @@ func (t AudioStemThread) IsReverse(worker string) bool {
 func (t *AudioStemThread) GetValidatorReward(worker string, totalReward types.Coin) types.Coin {
 	var totalFiles int
 	for _, validation := range t.Validations {
-		totalFiles = totalFiles + int(len(validation.Frames))
+		totalFiles = totalFiles + int(len(validation.Stems))
 	}
 	for _, validation := range t.Validations {
 		if validation.Validator == worker {
-			amount := calculateValidatorPayment(int(len(validation.Frames)), totalFiles, totalReward.Amount)
+			amount := calculateValidatorPayment(int(len(validation.Stems)), totalFiles, totalReward.Amount)
 			return types.NewCoin("jct", amount)
 		}
 	}
@@ -275,14 +329,14 @@ func calculateValidatorPayment(filesValidated, totalFilesValidated int, totalVal
 
 // Once validations are ready, we show blockchain the solution
 func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
-	output := path.Join(rootPath, "renders", t.ThreadId, "output")
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
 	cids, err := ipfs.CalculateCIDs(output)
 	if err != nil {
 		audioStemLogger.Logger.Error(err.Error())
 		return err
 	}
 
-	solution := make(map[string]AudioStemThread_Frame)
+	solution := make(map[string]AudioStemThread_Stem)
 	for filename, cid := range cids {
 		path := filepath.Join(output, filename)
 		hash, err := CalculateFileHash(path)
@@ -292,7 +346,7 @@ func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
 			return err
 		}
 
-		frame := AudioStemThread_Frame{Filename: filename, Cid: cid, Hash: hash}
+		frame := AudioStemThread_Stem{Filename: filename, Cid: cid, Hash: hash}
 		solution[filename] = frame
 	}
 
@@ -319,9 +373,9 @@ func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
 
 // Evaluates if the verifications sent are valid
 func (t *AudioStemThread) EvaluateVerifications() error {
-	for _, frame := range t.Solution.Frames {
+	for _, frame := range t.Solution.Stems {
 		for _, validation := range t.Validations {
-			idx := slices.IndexFunc(validation.Frames, func(f *AudioStemThread_Frame) bool { return f.Filename == frame.Filename })
+			idx := slices.IndexFunc(validation.Stems, func(f *AudioStemThread_Stem) bool { return f.Filename == frame.Filename })
 
 			if idx < 0 {
 				// This verification doesn't have the frame of the solution, we skip it hoping another validation has it
@@ -340,7 +394,7 @@ func (t *AudioStemThread) EvaluateVerifications() error {
 				audioStemLogger.Logger.Error("unable to recreate original message %sto verify: %s", message, err.Error())
 				return err
 			}
-			sig, err := audioStemCrypto.DecodeSignatureFromCLI(validation.Frames[idx].Signature)
+			sig, err := audioStemCrypto.DecodeSignatureFromCLI(validation.Stems[idx].Signature)
 			if err != nil {
 				audioStemLogger.Logger.Error("unable to decode signature: %s", err.Error())
 				return err
@@ -352,7 +406,7 @@ func (t *AudioStemThread) EvaluateVerifications() error {
 				// verification passed
 				frame.ValidCount++
 			} else {
-				audioStemLogger.Logger.Debug("Verification for frame %s from pk %s NOT VALID!\nMessage: Hash: %s, address: %s\npublicKey:%s\nsignature:%s", validation.Frames[idx].Filename, validation.Validator, frame.Hash, validation.Validator, validation.PublicKey, validation.Frames[idx].Signature)
+				audioStemLogger.Logger.Debug("Verification for frame %s from pk %s NOT VALID!\nMessage: Hash: %s, address: %s\npublicKey:%s\nsignature:%s", validation.Stems[idx].Filename, validation.Validator, frame.Hash, validation.Validator, validation.PublicKey, validation.Stems[idx].Signature)
 				frame.InvalidCount++
 			}
 		}
@@ -371,12 +425,12 @@ func (t *AudioStemThread) IsSolutionAccepted() bool {
 		minValidValidations = 1
 	}
 
-	totalFrames := len(t.Solution.Frames)
+	totalFrames := len(t.Solution.Stems)
 	if totalFrames == 0 {
 		return false // no frames to evaluate
 	}
 
-	for _, frame := range t.Solution.Frames {
+	for _, frame := range t.Solution.Stems {
 		if int(frame.ValidCount) >= minValidValidations {
 			validFrameCount++
 		}
@@ -398,7 +452,7 @@ func (t *AudioStemThread) VerifySubmittedSolution(dir string) error {
 		audioStemLogger.Logger.Error("VerifySubmittedSolution dir: %s:%s", dir, err.Error())
 		return err
 	}
-	for _, frame := range t.Solution.Frames {
+	for _, frame := range t.Solution.Stems {
 		if frame.Cid != files[frame.Filename] {
 			err := fmt.Errorf("frame %s [%s] doesn't exists in %s", frame.Filename, frame.Cid, dir)
 			audioStemLogger.Logger.Error(err.Error())

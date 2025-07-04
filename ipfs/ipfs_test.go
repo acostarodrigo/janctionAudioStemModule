@@ -164,7 +164,7 @@ func TestCalculateCIDs_CommandExecutionFails(t *testing.T) {
 func TestUploadSolution_Success(t *testing.T) {
 	dir := t.TempDir()
 	threadId := "thread123"
-	threadOutputPath := filepath.Join(dir, "renders", threadId, "output")
+	threadOutputPath := filepath.Join(dir, "audioStems", threadId, "htdemucs")
 
 	// Setup valid output directory and dummy file
 	require.NoError(t, os.MkdirAll(threadOutputPath, 0755))
@@ -194,11 +194,11 @@ func TestUploadSolution_PathDoesNotExist(t *testing.T) {
 func TestUploadSolution_PathIsNotDirectory(t *testing.T) {
 	dir := t.TempDir()
 	threadId := "thread123"
-	renderPath := filepath.Join(dir, "renders", threadId)
+	renderPath := filepath.Join(dir, "audioStems", threadId)
 	require.NoError(t, os.MkdirAll(renderPath, 0755))
 
 	// Create a file instead of a directory at output path
-	outputFilePath := filepath.Join(renderPath, "output")
+	outputFilePath := filepath.Join(renderPath, "htdemucs")
 	require.NoError(t, os.WriteFile(outputFilePath, []byte("not a dir"), 0644))
 
 	cid, err := UploadSolution(context.Background(), dir, threadId)
@@ -210,7 +210,7 @@ func TestUploadSolution_PathIsNotDirectory(t *testing.T) {
 func TestUploadSolution_AddDirFails(t *testing.T) {
 	dir := t.TempDir()
 	threadId := "thread123"
-	threadOutputPath := filepath.Join(dir, "renders", threadId, "output")
+	threadOutputPath := filepath.Join(dir, "audioStems", threadId, "htdemucs")
 
 	require.NoError(t, os.MkdirAll(threadOutputPath, 0755))
 	require.NoError(t, os.WriteFile(filepath.Join(threadOutputPath, "result.png"), []byte("dummy"), 0644))

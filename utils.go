@@ -63,8 +63,8 @@ func ExecuteCli(args []string) error {
 	return nil
 }
 
-func FromCliToFrames(entries []string) map[string]AudioStemThread_Frame {
-	result := make(map[string]AudioStemThread_Frame)
+func FromCliToFrames(entries []string) map[string]AudioStemThread_Stem {
+	result := make(map[string]AudioStemThread_Stem)
 
 	for _, entry := range entries {
 		parts := strings.Split(entry, "=")
@@ -79,14 +79,14 @@ func FromCliToFrames(entries []string) map[string]AudioStemThread_Frame {
 			fmt.Println("Invalid CID:Hash format:", parts[1])
 			continue
 		}
-		frame := AudioStemThread_Frame{Filename: filename, Cid: cidAndHash[0], Hash: cidAndHash[1]}
+		frame := AudioStemThread_Stem{Filename: filename, Cid: cidAndHash[0], Hash: cidAndHash[1]}
 		result[filename] = frame
 	}
 
 	return result
 }
 
-func FromFramesToCli(frames map[string]AudioStemThread_Frame) []string {
+func FromFramesToCli(frames map[string]AudioStemThread_Stem) []string {
 	var result []string
 
 	for filename, frame := range frames {

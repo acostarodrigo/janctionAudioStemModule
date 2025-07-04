@@ -3024,9 +3024,9 @@ var (
 	fd_AudioStemTask_taskId       protoreflect.FieldDescriptor
 	fd_AudioStemTask_requester    protoreflect.FieldDescriptor
 	fd_AudioStemTask_cid          protoreflect.FieldDescriptor
-	fd_AudioStemTask_start_frame  protoreflect.FieldDescriptor
-	fd_AudioStemTask_end_frame    protoreflect.FieldDescriptor
-	fd_AudioStemTask_threadAmount protoreflect.FieldDescriptor
+	fd_AudioStemTask_amount_files protoreflect.FieldDescriptor
+	fd_AudioStemTask_instrument   protoreflect.FieldDescriptor
+	fd_AudioStemTask_mp3          protoreflect.FieldDescriptor
 	fd_AudioStemTask_completed    protoreflect.FieldDescriptor
 	fd_AudioStemTask_reward       protoreflect.FieldDescriptor
 	fd_AudioStemTask_threads      protoreflect.FieldDescriptor
@@ -3038,9 +3038,9 @@ func init() {
 	fd_AudioStemTask_taskId = md_AudioStemTask.Fields().ByName("taskId")
 	fd_AudioStemTask_requester = md_AudioStemTask.Fields().ByName("requester")
 	fd_AudioStemTask_cid = md_AudioStemTask.Fields().ByName("cid")
-	fd_AudioStemTask_start_frame = md_AudioStemTask.Fields().ByName("start_frame")
-	fd_AudioStemTask_end_frame = md_AudioStemTask.Fields().ByName("end_frame")
-	fd_AudioStemTask_threadAmount = md_AudioStemTask.Fields().ByName("threadAmount")
+	fd_AudioStemTask_amount_files = md_AudioStemTask.Fields().ByName("amount_files")
+	fd_AudioStemTask_instrument = md_AudioStemTask.Fields().ByName("instrument")
+	fd_AudioStemTask_mp3 = md_AudioStemTask.Fields().ByName("mp3")
 	fd_AudioStemTask_completed = md_AudioStemTask.Fields().ByName("completed")
 	fd_AudioStemTask_reward = md_AudioStemTask.Fields().ByName("reward")
 	fd_AudioStemTask_threads = md_AudioStemTask.Fields().ByName("threads")
@@ -3129,21 +3129,21 @@ func (x *fastReflection_AudioStemTask) Range(f func(protoreflect.FieldDescriptor
 			return
 		}
 	}
-	if x.StartFrame != int32(0) {
-		value := protoreflect.ValueOfInt32(x.StartFrame)
-		if !f(fd_AudioStemTask_start_frame, value) {
+	if x.AmountFiles != int32(0) {
+		value := protoreflect.ValueOfInt32(x.AmountFiles)
+		if !f(fd_AudioStemTask_amount_files, value) {
 			return
 		}
 	}
-	if x.EndFrame != int32(0) {
-		value := protoreflect.ValueOfInt32(x.EndFrame)
-		if !f(fd_AudioStemTask_end_frame, value) {
+	if x.Instrument != "" {
+		value := protoreflect.ValueOfString(x.Instrument)
+		if !f(fd_AudioStemTask_instrument, value) {
 			return
 		}
 	}
-	if x.ThreadAmount != int32(0) {
-		value := protoreflect.ValueOfInt32(x.ThreadAmount)
-		if !f(fd_AudioStemTask_threadAmount, value) {
+	if x.Mp3 != false {
+		value := protoreflect.ValueOfBool(x.Mp3)
+		if !f(fd_AudioStemTask_mp3, value) {
 			return
 		}
 	}
@@ -3186,12 +3186,12 @@ func (x *fastReflection_AudioStemTask) Has(fd protoreflect.FieldDescriptor) bool
 		return x.Requester != ""
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		return x.Cid != ""
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
-		return x.StartFrame != int32(0)
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		return x.EndFrame != int32(0)
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		return x.ThreadAmount != int32(0)
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
+		return x.AmountFiles != int32(0)
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		return x.Instrument != ""
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		return x.Mp3 != false
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		return x.Completed != false
 	case "janction.audioStem.v1.AudioStemTask.reward":
@@ -3220,12 +3220,12 @@ func (x *fastReflection_AudioStemTask) Clear(fd protoreflect.FieldDescriptor) {
 		x.Requester = ""
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		x.Cid = ""
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
-		x.StartFrame = int32(0)
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		x.EndFrame = int32(0)
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		x.ThreadAmount = int32(0)
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
+		x.AmountFiles = int32(0)
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		x.Instrument = ""
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		x.Mp3 = false
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		x.Completed = false
 	case "janction.audioStem.v1.AudioStemTask.reward":
@@ -3257,15 +3257,15 @@ func (x *fastReflection_AudioStemTask) Get(descriptor protoreflect.FieldDescript
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		value := x.Cid
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
-		value := x.StartFrame
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
+		value := x.AmountFiles
 		return protoreflect.ValueOfInt32(value)
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		value := x.EndFrame
-		return protoreflect.ValueOfInt32(value)
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		value := x.ThreadAmount
-		return protoreflect.ValueOfInt32(value)
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		value := x.Instrument
+		return protoreflect.ValueOfString(value)
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		value := x.Mp3
+		return protoreflect.ValueOfBool(value)
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		value := x.Completed
 		return protoreflect.ValueOfBool(value)
@@ -3304,12 +3304,12 @@ func (x *fastReflection_AudioStemTask) Set(fd protoreflect.FieldDescriptor, valu
 		x.Requester = value.Interface().(string)
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		x.Cid = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
-		x.StartFrame = int32(value.Int())
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		x.EndFrame = int32(value.Int())
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		x.ThreadAmount = int32(value.Int())
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
+		x.AmountFiles = int32(value.Int())
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		x.Instrument = value.Interface().(string)
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		x.Mp3 = value.Bool()
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		x.Completed = value.Bool()
 	case "janction.audioStem.v1.AudioStemTask.reward":
@@ -3355,12 +3355,12 @@ func (x *fastReflection_AudioStemTask) Mutable(fd protoreflect.FieldDescriptor) 
 		panic(fmt.Errorf("field requester of message janction.audioStem.v1.AudioStemTask is not mutable"))
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		panic(fmt.Errorf("field cid of message janction.audioStem.v1.AudioStemTask is not mutable"))
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
-		panic(fmt.Errorf("field start_frame of message janction.audioStem.v1.AudioStemTask is not mutable"))
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		panic(fmt.Errorf("field end_frame of message janction.audioStem.v1.AudioStemTask is not mutable"))
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		panic(fmt.Errorf("field threadAmount of message janction.audioStem.v1.AudioStemTask is not mutable"))
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
+		panic(fmt.Errorf("field amount_files of message janction.audioStem.v1.AudioStemTask is not mutable"))
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		panic(fmt.Errorf("field instrument of message janction.audioStem.v1.AudioStemTask is not mutable"))
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		panic(fmt.Errorf("field mp3 of message janction.audioStem.v1.AudioStemTask is not mutable"))
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		panic(fmt.Errorf("field completed of message janction.audioStem.v1.AudioStemTask is not mutable"))
 	default:
@@ -3382,12 +3382,12 @@ func (x *fastReflection_AudioStemTask) NewField(fd protoreflect.FieldDescriptor)
 		return protoreflect.ValueOfString("")
 	case "janction.audioStem.v1.AudioStemTask.cid":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemTask.start_frame":
+	case "janction.audioStem.v1.AudioStemTask.amount_files":
 		return protoreflect.ValueOfInt32(int32(0))
-	case "janction.audioStem.v1.AudioStemTask.end_frame":
-		return protoreflect.ValueOfInt32(int32(0))
-	case "janction.audioStem.v1.AudioStemTask.threadAmount":
-		return protoreflect.ValueOfInt32(int32(0))
+	case "janction.audioStem.v1.AudioStemTask.instrument":
+		return protoreflect.ValueOfString("")
+	case "janction.audioStem.v1.AudioStemTask.mp3":
+		return protoreflect.ValueOfBool(false)
 	case "janction.audioStem.v1.AudioStemTask.completed":
 		return protoreflect.ValueOfBool(false)
 	case "janction.audioStem.v1.AudioStemTask.reward":
@@ -3477,14 +3477,15 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.StartFrame != 0 {
-			n += 1 + runtime.Sov(uint64(x.StartFrame))
+		if x.AmountFiles != 0 {
+			n += 1 + runtime.Sov(uint64(x.AmountFiles))
 		}
-		if x.EndFrame != 0 {
-			n += 1 + runtime.Sov(uint64(x.EndFrame))
+		l = len(x.Instrument)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.ThreadAmount != 0 {
-			n += 1 + runtime.Sov(uint64(x.ThreadAmount))
+		if x.Mp3 {
+			n += 2
 		}
 		if x.Completed {
 			n += 2
@@ -3568,18 +3569,25 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 			i--
 			dAtA[i] = 0x38
 		}
-		if x.ThreadAmount != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.ThreadAmount))
+		if x.Mp3 {
+			i--
+			if x.Mp3 {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
 			i--
 			dAtA[i] = 0x30
 		}
-		if x.EndFrame != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.EndFrame))
+		if len(x.Instrument) > 0 {
+			i -= len(x.Instrument)
+			copy(dAtA[i:], x.Instrument)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Instrument)))
 			i--
-			dAtA[i] = 0x28
+			dAtA[i] = 0x2a
 		}
-		if x.StartFrame != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.StartFrame))
+		if x.AmountFiles != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.AmountFiles))
 			i--
 			dAtA[i] = 0x20
 		}
@@ -3751,9 +3759,9 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 				iNdEx = postIndex
 			case 4:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StartFrame", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AmountFiles", wireType)
 				}
-				x.StartFrame = 0
+				x.AmountFiles = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -3763,16 +3771,16 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.StartFrame |= int32(b&0x7F) << shift
+					x.AmountFiles |= int32(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
 			case 5:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EndFrame", wireType)
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Instrument", wireType)
 				}
-				x.EndFrame = 0
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -3782,16 +3790,29 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.EndFrame |= int32(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Instrument = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			case 6:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field ThreadAmount", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Mp3", wireType)
 				}
-				x.ThreadAmount = 0
+				var v int
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -3801,11 +3822,12 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.ThreadAmount |= int32(b&0x7F) << shift
+					v |= int(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				x.Mp3 = bool(v != 0)
 			case 7:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Completed", wireType)
@@ -3931,114 +3953,115 @@ func (x *fastReflection_AudioStemTask) ProtoMethods() *protoiface.Methods {
 	}
 }
 
-var _ protoreflect.List = (*_AudioStemThread_6_list)(nil)
+var _ protoreflect.List = (*_AudioStemThread_7_list)(nil)
 
-type _AudioStemThread_6_list struct {
+type _AudioStemThread_7_list struct {
 	list *[]string
 }
 
-func (x *_AudioStemThread_6_list) Len() int {
+func (x *_AudioStemThread_7_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_AudioStemThread_6_list) Get(i int) protoreflect.Value {
+func (x *_AudioStemThread_7_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfString((*x.list)[i])
 }
 
-func (x *_AudioStemThread_6_list) Set(i int, value protoreflect.Value) {
+func (x *_AudioStemThread_7_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_AudioStemThread_6_list) Append(value protoreflect.Value) {
+func (x *_AudioStemThread_7_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.String()
 	concreteValue := valueUnwrapped
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_AudioStemThread_6_list) AppendMutable() protoreflect.Value {
+func (x *_AudioStemThread_7_list) AppendMutable() protoreflect.Value {
 	panic(fmt.Errorf("AppendMutable can not be called on message AudioStemThread at list field Workers as it is not of Message kind"))
 }
 
-func (x *_AudioStemThread_6_list) Truncate(n int) {
+func (x *_AudioStemThread_7_list) Truncate(n int) {
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_AudioStemThread_6_list) NewElement() protoreflect.Value {
+func (x *_AudioStemThread_7_list) NewElement() protoreflect.Value {
 	v := ""
 	return protoreflect.ValueOfString(v)
 }
 
-func (x *_AudioStemThread_6_list) IsValid() bool {
+func (x *_AudioStemThread_7_list) IsValid() bool {
 	return x.list != nil
 }
 
-var _ protoreflect.List = (*_AudioStemThread_8_list)(nil)
+var _ protoreflect.List = (*_AudioStemThread_9_list)(nil)
 
-type _AudioStemThread_8_list struct {
+type _AudioStemThread_9_list struct {
 	list *[]*AudioStemThread_Validation
 }
 
-func (x *_AudioStemThread_8_list) Len() int {
+func (x *_AudioStemThread_9_list) Len() int {
 	if x.list == nil {
 		return 0
 	}
 	return len(*x.list)
 }
 
-func (x *_AudioStemThread_8_list) Get(i int) protoreflect.Value {
+func (x *_AudioStemThread_9_list) Get(i int) protoreflect.Value {
 	return protoreflect.ValueOfMessage((*x.list)[i].ProtoReflect())
 }
 
-func (x *_AudioStemThread_8_list) Set(i int, value protoreflect.Value) {
+func (x *_AudioStemThread_9_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Validation)
 	(*x.list)[i] = concreteValue
 }
 
-func (x *_AudioStemThread_8_list) Append(value protoreflect.Value) {
+func (x *_AudioStemThread_9_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
 	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Validation)
 	*x.list = append(*x.list, concreteValue)
 }
 
-func (x *_AudioStemThread_8_list) AppendMutable() protoreflect.Value {
+func (x *_AudioStemThread_9_list) AppendMutable() protoreflect.Value {
 	v := new(AudioStemThread_Validation)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_AudioStemThread_8_list) Truncate(n int) {
+func (x *_AudioStemThread_9_list) Truncate(n int) {
 	for i := n; i < len(*x.list); i++ {
 		(*x.list)[i] = nil
 	}
 	*x.list = (*x.list)[:n]
 }
 
-func (x *_AudioStemThread_8_list) NewElement() protoreflect.Value {
+func (x *_AudioStemThread_9_list) NewElement() protoreflect.Value {
 	v := new(AudioStemThread_Validation)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
-func (x *_AudioStemThread_8_list) IsValid() bool {
+func (x *_AudioStemThread_9_list) IsValid() bool {
 	return x.list != nil
 }
 
 var (
-	md_AudioStemThread                        protoreflect.MessageDescriptor
-	fd_AudioStemThread_thread_id              protoreflect.FieldDescriptor
-	fd_AudioStemThread_task_id                protoreflect.FieldDescriptor
-	fd_AudioStemThread_start_frame            protoreflect.FieldDescriptor
-	fd_AudioStemThread_end_frame              protoreflect.FieldDescriptor
-	fd_AudioStemThread_completed              protoreflect.FieldDescriptor
-	fd_AudioStemThread_workers                protoreflect.FieldDescriptor
-	fd_AudioStemThread_solution               protoreflect.FieldDescriptor
-	fd_AudioStemThread_validations            protoreflect.FieldDescriptor
-	fd_AudioStemThread_average_render_seconds protoreflect.FieldDescriptor
+	md_AudioStemThread                      protoreflect.MessageDescriptor
+	fd_AudioStemThread_thread_id            protoreflect.FieldDescriptor
+	fd_AudioStemThread_task_id              protoreflect.FieldDescriptor
+	fd_AudioStemThread_filename             protoreflect.FieldDescriptor
+	fd_AudioStemThread_instrument           protoreflect.FieldDescriptor
+	fd_AudioStemThread_mp3                  protoreflect.FieldDescriptor
+	fd_AudioStemThread_completed            protoreflect.FieldDescriptor
+	fd_AudioStemThread_workers              protoreflect.FieldDescriptor
+	fd_AudioStemThread_solution             protoreflect.FieldDescriptor
+	fd_AudioStemThread_validations          protoreflect.FieldDescriptor
+	fd_AudioStemThread_average_stem_seconds protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -4046,13 +4069,14 @@ func init() {
 	md_AudioStemThread = File_janction_audioStem_v1_types_proto.Messages().ByName("AudioStemThread")
 	fd_AudioStemThread_thread_id = md_AudioStemThread.Fields().ByName("thread_id")
 	fd_AudioStemThread_task_id = md_AudioStemThread.Fields().ByName("task_id")
-	fd_AudioStemThread_start_frame = md_AudioStemThread.Fields().ByName("start_frame")
-	fd_AudioStemThread_end_frame = md_AudioStemThread.Fields().ByName("end_frame")
+	fd_AudioStemThread_filename = md_AudioStemThread.Fields().ByName("filename")
+	fd_AudioStemThread_instrument = md_AudioStemThread.Fields().ByName("instrument")
+	fd_AudioStemThread_mp3 = md_AudioStemThread.Fields().ByName("mp3")
 	fd_AudioStemThread_completed = md_AudioStemThread.Fields().ByName("completed")
 	fd_AudioStemThread_workers = md_AudioStemThread.Fields().ByName("workers")
 	fd_AudioStemThread_solution = md_AudioStemThread.Fields().ByName("solution")
 	fd_AudioStemThread_validations = md_AudioStemThread.Fields().ByName("validations")
-	fd_AudioStemThread_average_render_seconds = md_AudioStemThread.Fields().ByName("average_render_seconds")
+	fd_AudioStemThread_average_stem_seconds = md_AudioStemThread.Fields().ByName("average_stem_seconds")
 }
 
 var _ protoreflect.Message = (*fastReflection_AudioStemThread)(nil)
@@ -4132,15 +4156,21 @@ func (x *fastReflection_AudioStemThread) Range(f func(protoreflect.FieldDescript
 			return
 		}
 	}
-	if x.StartFrame != int64(0) {
-		value := protoreflect.ValueOfInt64(x.StartFrame)
-		if !f(fd_AudioStemThread_start_frame, value) {
+	if x.Filename != "" {
+		value := protoreflect.ValueOfString(x.Filename)
+		if !f(fd_AudioStemThread_filename, value) {
 			return
 		}
 	}
-	if x.EndFrame != int64(0) {
-		value := protoreflect.ValueOfInt64(x.EndFrame)
-		if !f(fd_AudioStemThread_end_frame, value) {
+	if x.Instrument != "" {
+		value := protoreflect.ValueOfString(x.Instrument)
+		if !f(fd_AudioStemThread_instrument, value) {
+			return
+		}
+	}
+	if x.Mp3 != false {
+		value := protoreflect.ValueOfBool(x.Mp3)
+		if !f(fd_AudioStemThread_mp3, value) {
 			return
 		}
 	}
@@ -4151,7 +4181,7 @@ func (x *fastReflection_AudioStemThread) Range(f func(protoreflect.FieldDescript
 		}
 	}
 	if len(x.Workers) != 0 {
-		value := protoreflect.ValueOfList(&_AudioStemThread_6_list{list: &x.Workers})
+		value := protoreflect.ValueOfList(&_AudioStemThread_7_list{list: &x.Workers})
 		if !f(fd_AudioStemThread_workers, value) {
 			return
 		}
@@ -4163,14 +4193,14 @@ func (x *fastReflection_AudioStemThread) Range(f func(protoreflect.FieldDescript
 		}
 	}
 	if len(x.Validations) != 0 {
-		value := protoreflect.ValueOfList(&_AudioStemThread_8_list{list: &x.Validations})
+		value := protoreflect.ValueOfList(&_AudioStemThread_9_list{list: &x.Validations})
 		if !f(fd_AudioStemThread_validations, value) {
 			return
 		}
 	}
-	if x.AverageRenderSeconds != int64(0) {
-		value := protoreflect.ValueOfInt64(x.AverageRenderSeconds)
-		if !f(fd_AudioStemThread_average_render_seconds, value) {
+	if x.AverageStemSeconds != int64(0) {
+		value := protoreflect.ValueOfInt64(x.AverageStemSeconds)
+		if !f(fd_AudioStemThread_average_stem_seconds, value) {
 			return
 		}
 	}
@@ -4193,10 +4223,12 @@ func (x *fastReflection_AudioStemThread) Has(fd protoreflect.FieldDescriptor) bo
 		return x.ThreadId != ""
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		return x.TaskId != ""
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		return x.StartFrame != int64(0)
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		return x.EndFrame != int64(0)
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		return x.Filename != ""
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		return x.Instrument != ""
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		return x.Mp3 != false
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		return x.Completed != false
 	case "janction.audioStem.v1.AudioStemThread.workers":
@@ -4205,8 +4237,8 @@ func (x *fastReflection_AudioStemThread) Has(fd protoreflect.FieldDescriptor) bo
 		return x.Solution != nil
 	case "janction.audioStem.v1.AudioStemThread.validations":
 		return len(x.Validations) != 0
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
-		return x.AverageRenderSeconds != int64(0)
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
+		return x.AverageStemSeconds != int64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread"))
@@ -4227,10 +4259,12 @@ func (x *fastReflection_AudioStemThread) Clear(fd protoreflect.FieldDescriptor) 
 		x.ThreadId = ""
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		x.TaskId = ""
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		x.StartFrame = int64(0)
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		x.EndFrame = int64(0)
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		x.Filename = ""
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		x.Instrument = ""
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		x.Mp3 = false
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		x.Completed = false
 	case "janction.audioStem.v1.AudioStemThread.workers":
@@ -4239,8 +4273,8 @@ func (x *fastReflection_AudioStemThread) Clear(fd protoreflect.FieldDescriptor) 
 		x.Solution = nil
 	case "janction.audioStem.v1.AudioStemThread.validations":
 		x.Validations = nil
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
-		x.AverageRenderSeconds = int64(0)
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
+		x.AverageStemSeconds = int64(0)
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread"))
@@ -4263,32 +4297,35 @@ func (x *fastReflection_AudioStemThread) Get(descriptor protoreflect.FieldDescri
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		value := x.TaskId
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		value := x.StartFrame
-		return protoreflect.ValueOfInt64(value)
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		value := x.EndFrame
-		return protoreflect.ValueOfInt64(value)
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		value := x.Filename
+		return protoreflect.ValueOfString(value)
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		value := x.Instrument
+		return protoreflect.ValueOfString(value)
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		value := x.Mp3
+		return protoreflect.ValueOfBool(value)
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		value := x.Completed
 		return protoreflect.ValueOfBool(value)
 	case "janction.audioStem.v1.AudioStemThread.workers":
 		if len(x.Workers) == 0 {
-			return protoreflect.ValueOfList(&_AudioStemThread_6_list{})
+			return protoreflect.ValueOfList(&_AudioStemThread_7_list{})
 		}
-		listValue := &_AudioStemThread_6_list{list: &x.Workers}
+		listValue := &_AudioStemThread_7_list{list: &x.Workers}
 		return protoreflect.ValueOfList(listValue)
 	case "janction.audioStem.v1.AudioStemThread.solution":
 		value := x.Solution
 		return protoreflect.ValueOfMessage(value.ProtoReflect())
 	case "janction.audioStem.v1.AudioStemThread.validations":
 		if len(x.Validations) == 0 {
-			return protoreflect.ValueOfList(&_AudioStemThread_8_list{})
+			return protoreflect.ValueOfList(&_AudioStemThread_9_list{})
 		}
-		listValue := &_AudioStemThread_8_list{list: &x.Validations}
+		listValue := &_AudioStemThread_9_list{list: &x.Validations}
 		return protoreflect.ValueOfList(listValue)
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
-		value := x.AverageRenderSeconds
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
+		value := x.AverageStemSeconds
 		return protoreflect.ValueOfInt64(value)
 	default:
 		if descriptor.IsExtension() {
@@ -4314,24 +4351,26 @@ func (x *fastReflection_AudioStemThread) Set(fd protoreflect.FieldDescriptor, va
 		x.ThreadId = value.Interface().(string)
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		x.TaskId = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		x.StartFrame = value.Int()
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		x.EndFrame = value.Int()
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		x.Filename = value.Interface().(string)
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		x.Instrument = value.Interface().(string)
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		x.Mp3 = value.Bool()
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		x.Completed = value.Bool()
 	case "janction.audioStem.v1.AudioStemThread.workers":
 		lv := value.List()
-		clv := lv.(*_AudioStemThread_6_list)
+		clv := lv.(*_AudioStemThread_7_list)
 		x.Workers = *clv.list
 	case "janction.audioStem.v1.AudioStemThread.solution":
 		x.Solution = value.Message().Interface().(*AudioStemThread_Solution)
 	case "janction.audioStem.v1.AudioStemThread.validations":
 		lv := value.List()
-		clv := lv.(*_AudioStemThread_8_list)
+		clv := lv.(*_AudioStemThread_9_list)
 		x.Validations = *clv.list
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
-		x.AverageRenderSeconds = value.Int()
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
+		x.AverageStemSeconds = value.Int()
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread"))
@@ -4356,7 +4395,7 @@ func (x *fastReflection_AudioStemThread) Mutable(fd protoreflect.FieldDescriptor
 		if x.Workers == nil {
 			x.Workers = []string{}
 		}
-		value := &_AudioStemThread_6_list{list: &x.Workers}
+		value := &_AudioStemThread_7_list{list: &x.Workers}
 		return protoreflect.ValueOfList(value)
 	case "janction.audioStem.v1.AudioStemThread.solution":
 		if x.Solution == nil {
@@ -4367,20 +4406,22 @@ func (x *fastReflection_AudioStemThread) Mutable(fd protoreflect.FieldDescriptor
 		if x.Validations == nil {
 			x.Validations = []*AudioStemThread_Validation{}
 		}
-		value := &_AudioStemThread_8_list{list: &x.Validations}
+		value := &_AudioStemThread_9_list{list: &x.Validations}
 		return protoreflect.ValueOfList(value)
 	case "janction.audioStem.v1.AudioStemThread.thread_id":
 		panic(fmt.Errorf("field thread_id of message janction.audioStem.v1.AudioStemThread is not mutable"))
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		panic(fmt.Errorf("field task_id of message janction.audioStem.v1.AudioStemThread is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		panic(fmt.Errorf("field start_frame of message janction.audioStem.v1.AudioStemThread is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		panic(fmt.Errorf("field end_frame of message janction.audioStem.v1.AudioStemThread is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		panic(fmt.Errorf("field filename of message janction.audioStem.v1.AudioStemThread is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		panic(fmt.Errorf("field instrument of message janction.audioStem.v1.AudioStemThread is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		panic(fmt.Errorf("field mp3 of message janction.audioStem.v1.AudioStemThread is not mutable"))
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		panic(fmt.Errorf("field completed of message janction.audioStem.v1.AudioStemThread is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
-		panic(fmt.Errorf("field average_render_seconds of message janction.audioStem.v1.AudioStemThread is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
+		panic(fmt.Errorf("field average_stem_seconds of message janction.audioStem.v1.AudioStemThread is not mutable"))
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread"))
@@ -4398,22 +4439,24 @@ func (x *fastReflection_AudioStemThread) NewField(fd protoreflect.FieldDescripto
 		return protoreflect.ValueOfString("")
 	case "janction.audioStem.v1.AudioStemThread.task_id":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.start_frame":
-		return protoreflect.ValueOfInt64(int64(0))
-	case "janction.audioStem.v1.AudioStemThread.end_frame":
-		return protoreflect.ValueOfInt64(int64(0))
+	case "janction.audioStem.v1.AudioStemThread.filename":
+		return protoreflect.ValueOfString("")
+	case "janction.audioStem.v1.AudioStemThread.instrument":
+		return protoreflect.ValueOfString("")
+	case "janction.audioStem.v1.AudioStemThread.mp3":
+		return protoreflect.ValueOfBool(false)
 	case "janction.audioStem.v1.AudioStemThread.completed":
 		return protoreflect.ValueOfBool(false)
 	case "janction.audioStem.v1.AudioStemThread.workers":
 		list := []string{}
-		return protoreflect.ValueOfList(&_AudioStemThread_6_list{list: &list})
+		return protoreflect.ValueOfList(&_AudioStemThread_7_list{list: &list})
 	case "janction.audioStem.v1.AudioStemThread.solution":
 		m := new(AudioStemThread_Solution)
 		return protoreflect.ValueOfMessage(m.ProtoReflect())
 	case "janction.audioStem.v1.AudioStemThread.validations":
 		list := []*AudioStemThread_Validation{}
-		return protoreflect.ValueOfList(&_AudioStemThread_8_list{list: &list})
-	case "janction.audioStem.v1.AudioStemThread.average_render_seconds":
+		return protoreflect.ValueOfList(&_AudioStemThread_9_list{list: &list})
+	case "janction.audioStem.v1.AudioStemThread.average_stem_seconds":
 		return protoreflect.ValueOfInt64(int64(0))
 	default:
 		if fd.IsExtension() {
@@ -4492,11 +4535,16 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.StartFrame != 0 {
-			n += 1 + runtime.Sov(uint64(x.StartFrame))
+		l = len(x.Filename)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if x.EndFrame != 0 {
-			n += 1 + runtime.Sov(uint64(x.EndFrame))
+		l = len(x.Instrument)
+		if l > 0 {
+			n += 1 + l + runtime.Sov(uint64(l))
+		}
+		if x.Mp3 {
+			n += 2
 		}
 		if x.Completed {
 			n += 2
@@ -4517,8 +4565,8 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
 		}
-		if x.AverageRenderSeconds != 0 {
-			n += 1 + runtime.Sov(uint64(x.AverageRenderSeconds))
+		if x.AverageStemSeconds != 0 {
+			n += 1 + runtime.Sov(uint64(x.AverageStemSeconds))
 		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
@@ -4549,10 +4597,10 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
 		}
-		if x.AverageRenderSeconds != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.AverageRenderSeconds))
+		if x.AverageStemSeconds != 0 {
+			i = runtime.EncodeVarint(dAtA, i, uint64(x.AverageStemSeconds))
 			i--
-			dAtA[i] = 0x48
+			dAtA[i] = 0x50
 		}
 		if len(x.Validations) > 0 {
 			for iNdEx := len(x.Validations) - 1; iNdEx >= 0; iNdEx-- {
@@ -4567,7 +4615,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], encoded)
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 				i--
-				dAtA[i] = 0x42
+				dAtA[i] = 0x4a
 			}
 		}
 		if x.Solution != nil {
@@ -4582,7 +4630,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 			copy(dAtA[i:], encoded)
 			i = runtime.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			i--
-			dAtA[i] = 0x3a
+			dAtA[i] = 0x42
 		}
 		if len(x.Workers) > 0 {
 			for iNdEx := len(x.Workers) - 1; iNdEx >= 0; iNdEx-- {
@@ -4590,7 +4638,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				copy(dAtA[i:], x.Workers[iNdEx])
 				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Workers[iNdEx])))
 				i--
-				dAtA[i] = 0x32
+				dAtA[i] = 0x3a
 			}
 		}
 		if x.Completed {
@@ -4601,17 +4649,31 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				dAtA[i] = 0
 			}
 			i--
+			dAtA[i] = 0x30
+		}
+		if x.Mp3 {
+			i--
+			if x.Mp3 {
+				dAtA[i] = 1
+			} else {
+				dAtA[i] = 0
+			}
+			i--
 			dAtA[i] = 0x28
 		}
-		if x.EndFrame != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.EndFrame))
+		if len(x.Instrument) > 0 {
+			i -= len(x.Instrument)
+			copy(dAtA[i:], x.Instrument)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Instrument)))
 			i--
-			dAtA[i] = 0x20
+			dAtA[i] = 0x22
 		}
-		if x.StartFrame != 0 {
-			i = runtime.EncodeVarint(dAtA, i, uint64(x.StartFrame))
+		if len(x.Filename) > 0 {
+			i -= len(x.Filename)
+			copy(dAtA[i:], x.Filename)
+			i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Filename)))
 			i--
-			dAtA[i] = 0x18
+			dAtA[i] = 0x1a
 		}
 		if len(x.TaskId) > 0 {
 			i -= len(x.TaskId)
@@ -4741,10 +4803,10 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				x.TaskId = string(dAtA[iNdEx:postIndex])
 				iNdEx = postIndex
 			case 3:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field StartFrame", wireType)
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Filename", wireType)
 				}
-				x.StartFrame = 0
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -4754,16 +4816,29 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.StartFrame |= int64(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Filename = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			case 4:
-				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field EndFrame", wireType)
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Instrument", wireType)
 				}
-				x.EndFrame = 0
+				var stringLen uint64
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -4773,12 +4848,45 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.EndFrame |= int64(b&0x7F) << shift
+					stringLen |= uint64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
 				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Instrument = string(dAtA[iNdEx:postIndex])
+				iNdEx = postIndex
 			case 5:
+				if wireType != 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Mp3", wireType)
+				}
+				var v int
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					v |= int(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				x.Mp3 = bool(v != 0)
+			case 6:
 				if wireType != 0 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Completed", wireType)
 				}
@@ -4798,7 +4906,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					}
 				}
 				x.Completed = bool(v != 0)
-			case 6:
+			case 7:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Workers", wireType)
 				}
@@ -4830,7 +4938,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 				}
 				x.Workers = append(x.Workers, string(dAtA[iNdEx:postIndex]))
 				iNdEx = postIndex
-			case 7:
+			case 8:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Solution", wireType)
 				}
@@ -4866,7 +4974,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
-			case 8:
+			case 9:
 				if wireType != 2 {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Validations", wireType)
 				}
@@ -4900,11 +5008,11 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
-			case 9:
+			case 10:
 				if wireType != 0 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AverageRenderSeconds", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field AverageStemSeconds", wireType)
 				}
-				x.AverageRenderSeconds = 0
+				x.AverageStemSeconds = 0
 				for shift := uint(0); ; shift += 7 {
 					if shift >= 64 {
 						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
@@ -4914,7 +5022,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 					}
 					b := dAtA[iNdEx]
 					iNdEx++
-					x.AverageRenderSeconds |= int64(b&0x7F) << shift
+					x.AverageStemSeconds |= int64(b&0x7F) << shift
 					if b < 0x80 {
 						break
 					}
@@ -4957,7 +5065,7 @@ func (x *fastReflection_AudioStemThread) ProtoMethods() *protoiface.Methods {
 var _ protoreflect.List = (*_AudioStemThread_Solution_2_list)(nil)
 
 type _AudioStemThread_Solution_2_list struct {
-	list *[]*AudioStemThread_Frame
+	list *[]*AudioStemThread_Stem
 }
 
 func (x *_AudioStemThread_Solution_2_list) Len() int {
@@ -4973,18 +5081,18 @@ func (x *_AudioStemThread_Solution_2_list) Get(i int) protoreflect.Value {
 
 func (x *_AudioStemThread_Solution_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Frame)
+	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Stem)
 	(*x.list)[i] = concreteValue
 }
 
 func (x *_AudioStemThread_Solution_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Frame)
+	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Stem)
 	*x.list = append(*x.list, concreteValue)
 }
 
 func (x *_AudioStemThread_Solution_2_list) AppendMutable() protoreflect.Value {
-	v := new(AudioStemThread_Frame)
+	v := new(AudioStemThread_Stem)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
@@ -4997,7 +5105,7 @@ func (x *_AudioStemThread_Solution_2_list) Truncate(n int) {
 }
 
 func (x *_AudioStemThread_Solution_2_list) NewElement() protoreflect.Value {
-	v := new(AudioStemThread_Frame)
+	v := new(AudioStemThread_Stem)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
@@ -5008,7 +5116,7 @@ func (x *_AudioStemThread_Solution_2_list) IsValid() bool {
 var (
 	md_AudioStemThread_Solution             protoreflect.MessageDescriptor
 	fd_AudioStemThread_Solution_proposed_by protoreflect.FieldDescriptor
-	fd_AudioStemThread_Solution_frames      protoreflect.FieldDescriptor
+	fd_AudioStemThread_Solution_stems       protoreflect.FieldDescriptor
 	fd_AudioStemThread_Solution_public_key  protoreflect.FieldDescriptor
 	fd_AudioStemThread_Solution_dir         protoreflect.FieldDescriptor
 	fd_AudioStemThread_Solution_accepted    protoreflect.FieldDescriptor
@@ -5018,7 +5126,7 @@ func init() {
 	file_janction_audioStem_v1_types_proto_init()
 	md_AudioStemThread_Solution = File_janction_audioStem_v1_types_proto.Messages().ByName("AudioStemThread").Messages().ByName("Solution")
 	fd_AudioStemThread_Solution_proposed_by = md_AudioStemThread_Solution.Fields().ByName("proposed_by")
-	fd_AudioStemThread_Solution_frames = md_AudioStemThread_Solution.Fields().ByName("frames")
+	fd_AudioStemThread_Solution_stems = md_AudioStemThread_Solution.Fields().ByName("stems")
 	fd_AudioStemThread_Solution_public_key = md_AudioStemThread_Solution.Fields().ByName("public_key")
 	fd_AudioStemThread_Solution_dir = md_AudioStemThread_Solution.Fields().ByName("dir")
 	fd_AudioStemThread_Solution_accepted = md_AudioStemThread_Solution.Fields().ByName("accepted")
@@ -5095,9 +5203,9 @@ func (x *fastReflection_AudioStemThread_Solution) Range(f func(protoreflect.Fiel
 			return
 		}
 	}
-	if len(x.Frames) != 0 {
-		value := protoreflect.ValueOfList(&_AudioStemThread_Solution_2_list{list: &x.Frames})
-		if !f(fd_AudioStemThread_Solution_frames, value) {
+	if len(x.Stems) != 0 {
+		value := protoreflect.ValueOfList(&_AudioStemThread_Solution_2_list{list: &x.Stems})
+		if !f(fd_AudioStemThread_Solution_stems, value) {
 			return
 		}
 	}
@@ -5136,8 +5244,8 @@ func (x *fastReflection_AudioStemThread_Solution) Has(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		return x.ProposedBy != ""
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
-		return len(x.Frames) != 0
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
+		return len(x.Stems) != 0
 	case "janction.audioStem.v1.AudioStemThread.Solution.public_key":
 		return x.PublicKey != ""
 	case "janction.audioStem.v1.AudioStemThread.Solution.dir":
@@ -5162,8 +5270,8 @@ func (x *fastReflection_AudioStemThread_Solution) Clear(fd protoreflect.FieldDes
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		x.ProposedBy = ""
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
-		x.Frames = nil
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
+		x.Stems = nil
 	case "janction.audioStem.v1.AudioStemThread.Solution.public_key":
 		x.PublicKey = ""
 	case "janction.audioStem.v1.AudioStemThread.Solution.dir":
@@ -5189,11 +5297,11 @@ func (x *fastReflection_AudioStemThread_Solution) Get(descriptor protoreflect.Fi
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		value := x.ProposedBy
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
-		if len(x.Frames) == 0 {
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
+		if len(x.Stems) == 0 {
 			return protoreflect.ValueOfList(&_AudioStemThread_Solution_2_list{})
 		}
-		listValue := &_AudioStemThread_Solution_2_list{list: &x.Frames}
+		listValue := &_AudioStemThread_Solution_2_list{list: &x.Stems}
 		return protoreflect.ValueOfList(listValue)
 	case "janction.audioStem.v1.AudioStemThread.Solution.public_key":
 		value := x.PublicKey
@@ -5226,10 +5334,10 @@ func (x *fastReflection_AudioStemThread_Solution) Set(fd protoreflect.FieldDescr
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		x.ProposedBy = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
 		lv := value.List()
 		clv := lv.(*_AudioStemThread_Solution_2_list)
-		x.Frames = *clv.list
+		x.Stems = *clv.list
 	case "janction.audioStem.v1.AudioStemThread.Solution.public_key":
 		x.PublicKey = value.Interface().(string)
 	case "janction.audioStem.v1.AudioStemThread.Solution.dir":
@@ -5256,11 +5364,11 @@ func (x *fastReflection_AudioStemThread_Solution) Set(fd protoreflect.FieldDescr
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_AudioStemThread_Solution) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
-		if x.Frames == nil {
-			x.Frames = []*AudioStemThread_Frame{}
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
+		if x.Stems == nil {
+			x.Stems = []*AudioStemThread_Stem{}
 		}
-		value := &_AudioStemThread_Solution_2_list{list: &x.Frames}
+		value := &_AudioStemThread_Solution_2_list{list: &x.Stems}
 		return protoreflect.ValueOfList(value)
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		panic(fmt.Errorf("field proposed_by of message janction.audioStem.v1.AudioStemThread.Solution is not mutable"))
@@ -5285,8 +5393,8 @@ func (x *fastReflection_AudioStemThread_Solution) NewField(fd protoreflect.Field
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Solution.proposed_by":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Solution.frames":
-		list := []*AudioStemThread_Frame{}
+	case "janction.audioStem.v1.AudioStemThread.Solution.stems":
+		list := []*AudioStemThread_Stem{}
 		return protoreflect.ValueOfList(&_AudioStemThread_Solution_2_list{list: &list})
 	case "janction.audioStem.v1.AudioStemThread.Solution.public_key":
 		return protoreflect.ValueOfString("")
@@ -5367,8 +5475,8 @@ func (x *fastReflection_AudioStemThread_Solution) ProtoMethods() *protoiface.Met
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.Frames) > 0 {
-			for _, e := range x.Frames {
+		if len(x.Stems) > 0 {
+			for _, e := range x.Stems {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -5437,9 +5545,9 @@ func (x *fastReflection_AudioStemThread_Solution) ProtoMethods() *protoiface.Met
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.Frames) > 0 {
-			for iNdEx := len(x.Frames) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Frames[iNdEx])
+		if len(x.Stems) > 0 {
+			for iNdEx := len(x.Stems) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Stems[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -5543,7 +5651,7 @@ func (x *fastReflection_AudioStemThread_Solution) ProtoMethods() *protoiface.Met
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Frames", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Stems", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -5570,8 +5678,8 @@ func (x *fastReflection_AudioStemThread_Solution) ProtoMethods() *protoiface.Met
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Frames = append(x.Frames, &AudioStemThread_Frame{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Frames[len(x.Frames)-1]); err != nil {
+				x.Stems = append(x.Stems, &AudioStemThread_Stem{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Stems[len(x.Stems)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -5697,7 +5805,7 @@ func (x *fastReflection_AudioStemThread_Solution) ProtoMethods() *protoiface.Met
 var _ protoreflect.List = (*_AudioStemThread_Validation_2_list)(nil)
 
 type _AudioStemThread_Validation_2_list struct {
-	list *[]*AudioStemThread_Frame
+	list *[]*AudioStemThread_Stem
 }
 
 func (x *_AudioStemThread_Validation_2_list) Len() int {
@@ -5713,18 +5821,18 @@ func (x *_AudioStemThread_Validation_2_list) Get(i int) protoreflect.Value {
 
 func (x *_AudioStemThread_Validation_2_list) Set(i int, value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Frame)
+	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Stem)
 	(*x.list)[i] = concreteValue
 }
 
 func (x *_AudioStemThread_Validation_2_list) Append(value protoreflect.Value) {
 	valueUnwrapped := value.Message()
-	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Frame)
+	concreteValue := valueUnwrapped.Interface().(*AudioStemThread_Stem)
 	*x.list = append(*x.list, concreteValue)
 }
 
 func (x *_AudioStemThread_Validation_2_list) AppendMutable() protoreflect.Value {
-	v := new(AudioStemThread_Frame)
+	v := new(AudioStemThread_Stem)
 	*x.list = append(*x.list, v)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
@@ -5737,7 +5845,7 @@ func (x *_AudioStemThread_Validation_2_list) Truncate(n int) {
 }
 
 func (x *_AudioStemThread_Validation_2_list) NewElement() protoreflect.Value {
-	v := new(AudioStemThread_Frame)
+	v := new(AudioStemThread_Stem)
 	return protoreflect.ValueOfMessage(v.ProtoReflect())
 }
 
@@ -5748,7 +5856,7 @@ func (x *_AudioStemThread_Validation_2_list) IsValid() bool {
 var (
 	md_AudioStemThread_Validation            protoreflect.MessageDescriptor
 	fd_AudioStemThread_Validation_validator  protoreflect.FieldDescriptor
-	fd_AudioStemThread_Validation_frames     protoreflect.FieldDescriptor
+	fd_AudioStemThread_Validation_stems      protoreflect.FieldDescriptor
 	fd_AudioStemThread_Validation_public_key protoreflect.FieldDescriptor
 	fd_AudioStemThread_Validation_is_reverse protoreflect.FieldDescriptor
 )
@@ -5757,7 +5865,7 @@ func init() {
 	file_janction_audioStem_v1_types_proto_init()
 	md_AudioStemThread_Validation = File_janction_audioStem_v1_types_proto.Messages().ByName("AudioStemThread").Messages().ByName("Validation")
 	fd_AudioStemThread_Validation_validator = md_AudioStemThread_Validation.Fields().ByName("validator")
-	fd_AudioStemThread_Validation_frames = md_AudioStemThread_Validation.Fields().ByName("frames")
+	fd_AudioStemThread_Validation_stems = md_AudioStemThread_Validation.Fields().ByName("stems")
 	fd_AudioStemThread_Validation_public_key = md_AudioStemThread_Validation.Fields().ByName("public_key")
 	fd_AudioStemThread_Validation_is_reverse = md_AudioStemThread_Validation.Fields().ByName("is_reverse")
 }
@@ -5833,9 +5941,9 @@ func (x *fastReflection_AudioStemThread_Validation) Range(f func(protoreflect.Fi
 			return
 		}
 	}
-	if len(x.Frames) != 0 {
-		value := protoreflect.ValueOfList(&_AudioStemThread_Validation_2_list{list: &x.Frames})
-		if !f(fd_AudioStemThread_Validation_frames, value) {
+	if len(x.Stems) != 0 {
+		value := protoreflect.ValueOfList(&_AudioStemThread_Validation_2_list{list: &x.Stems})
+		if !f(fd_AudioStemThread_Validation_stems, value) {
 			return
 		}
 	}
@@ -5868,8 +5976,8 @@ func (x *fastReflection_AudioStemThread_Validation) Has(fd protoreflect.FieldDes
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		return x.Validator != ""
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
-		return len(x.Frames) != 0
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
+		return len(x.Stems) != 0
 	case "janction.audioStem.v1.AudioStemThread.Validation.public_key":
 		return x.PublicKey != ""
 	case "janction.audioStem.v1.AudioStemThread.Validation.is_reverse":
@@ -5892,8 +6000,8 @@ func (x *fastReflection_AudioStemThread_Validation) Clear(fd protoreflect.FieldD
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		x.Validator = ""
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
-		x.Frames = nil
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
+		x.Stems = nil
 	case "janction.audioStem.v1.AudioStemThread.Validation.public_key":
 		x.PublicKey = ""
 	case "janction.audioStem.v1.AudioStemThread.Validation.is_reverse":
@@ -5917,11 +6025,11 @@ func (x *fastReflection_AudioStemThread_Validation) Get(descriptor protoreflect.
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		value := x.Validator
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
-		if len(x.Frames) == 0 {
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
+		if len(x.Stems) == 0 {
 			return protoreflect.ValueOfList(&_AudioStemThread_Validation_2_list{})
 		}
-		listValue := &_AudioStemThread_Validation_2_list{list: &x.Frames}
+		listValue := &_AudioStemThread_Validation_2_list{list: &x.Stems}
 		return protoreflect.ValueOfList(listValue)
 	case "janction.audioStem.v1.AudioStemThread.Validation.public_key":
 		value := x.PublicKey
@@ -5951,10 +6059,10 @@ func (x *fastReflection_AudioStemThread_Validation) Set(fd protoreflect.FieldDes
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		x.Validator = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
 		lv := value.List()
 		clv := lv.(*_AudioStemThread_Validation_2_list)
-		x.Frames = *clv.list
+		x.Stems = *clv.list
 	case "janction.audioStem.v1.AudioStemThread.Validation.public_key":
 		x.PublicKey = value.Interface().(string)
 	case "janction.audioStem.v1.AudioStemThread.Validation.is_reverse":
@@ -5979,11 +6087,11 @@ func (x *fastReflection_AudioStemThread_Validation) Set(fd protoreflect.FieldDes
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_AudioStemThread_Validation) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
-		if x.Frames == nil {
-			x.Frames = []*AudioStemThread_Frame{}
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
+		if x.Stems == nil {
+			x.Stems = []*AudioStemThread_Stem{}
 		}
-		value := &_AudioStemThread_Validation_2_list{list: &x.Frames}
+		value := &_AudioStemThread_Validation_2_list{list: &x.Stems}
 		return protoreflect.ValueOfList(value)
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		panic(fmt.Errorf("field validator of message janction.audioStem.v1.AudioStemThread.Validation is not mutable"))
@@ -6006,8 +6114,8 @@ func (x *fastReflection_AudioStemThread_Validation) NewField(fd protoreflect.Fie
 	switch fd.FullName() {
 	case "janction.audioStem.v1.AudioStemThread.Validation.validator":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Validation.frames":
-		list := []*AudioStemThread_Frame{}
+	case "janction.audioStem.v1.AudioStemThread.Validation.stems":
+		list := []*AudioStemThread_Stem{}
 		return protoreflect.ValueOfList(&_AudioStemThread_Validation_2_list{list: &list})
 	case "janction.audioStem.v1.AudioStemThread.Validation.public_key":
 		return protoreflect.ValueOfString("")
@@ -6086,8 +6194,8 @@ func (x *fastReflection_AudioStemThread_Validation) ProtoMethods() *protoiface.M
 		if l > 0 {
 			n += 1 + l + runtime.Sov(uint64(l))
 		}
-		if len(x.Frames) > 0 {
-			for _, e := range x.Frames {
+		if len(x.Stems) > 0 {
+			for _, e := range x.Stems {
 				l = options.Size(e)
 				n += 1 + l + runtime.Sov(uint64(l))
 			}
@@ -6145,9 +6253,9 @@ func (x *fastReflection_AudioStemThread_Validation) ProtoMethods() *protoiface.M
 			i--
 			dAtA[i] = 0x1a
 		}
-		if len(x.Frames) > 0 {
-			for iNdEx := len(x.Frames) - 1; iNdEx >= 0; iNdEx-- {
-				encoded, err := options.Marshal(x.Frames[iNdEx])
+		if len(x.Stems) > 0 {
+			for iNdEx := len(x.Stems) - 1; iNdEx >= 0; iNdEx-- {
+				encoded, err := options.Marshal(x.Stems[iNdEx])
 				if err != nil {
 					return protoiface.MarshalOutput{
 						NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6251,7 +6359,7 @@ func (x *fastReflection_AudioStemThread_Validation) ProtoMethods() *protoiface.M
 				iNdEx = postIndex
 			case 2:
 				if wireType != 2 {
-					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Frames", wireType)
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Stems", wireType)
 				}
 				var msglen int
 				for shift := uint(0); ; shift += 7 {
@@ -6278,8 +6386,8 @@ func (x *fastReflection_AudioStemThread_Validation) ProtoMethods() *protoiface.M
 				if postIndex > l {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
 				}
-				x.Frames = append(x.Frames, &AudioStemThread_Frame{})
-				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Frames[len(x.Frames)-1]); err != nil {
+				x.Stems = append(x.Stems, &AudioStemThread_Stem{})
+				if err := options.Unmarshal(dAtA[iNdEx:postIndex], x.Stems[len(x.Stems)-1]); err != nil {
 					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, err
 				}
 				iNdEx = postIndex
@@ -6371,35 +6479,35 @@ func (x *fastReflection_AudioStemThread_Validation) ProtoMethods() *protoiface.M
 }
 
 var (
-	md_AudioStemThread_Frame              protoreflect.MessageDescriptor
-	fd_AudioStemThread_Frame_filename     protoreflect.FieldDescriptor
-	fd_AudioStemThread_Frame_signature    protoreflect.FieldDescriptor
-	fd_AudioStemThread_Frame_cid          protoreflect.FieldDescriptor
-	fd_AudioStemThread_Frame_hash         protoreflect.FieldDescriptor
-	fd_AudioStemThread_Frame_validCount   protoreflect.FieldDescriptor
-	fd_AudioStemThread_Frame_invalidCount protoreflect.FieldDescriptor
+	md_AudioStemThread_Stem              protoreflect.MessageDescriptor
+	fd_AudioStemThread_Stem_filename     protoreflect.FieldDescriptor
+	fd_AudioStemThread_Stem_signature    protoreflect.FieldDescriptor
+	fd_AudioStemThread_Stem_cid          protoreflect.FieldDescriptor
+	fd_AudioStemThread_Stem_hash         protoreflect.FieldDescriptor
+	fd_AudioStemThread_Stem_validCount   protoreflect.FieldDescriptor
+	fd_AudioStemThread_Stem_invalidCount protoreflect.FieldDescriptor
 )
 
 func init() {
 	file_janction_audioStem_v1_types_proto_init()
-	md_AudioStemThread_Frame = File_janction_audioStem_v1_types_proto.Messages().ByName("AudioStemThread").Messages().ByName("Frame")
-	fd_AudioStemThread_Frame_filename = md_AudioStemThread_Frame.Fields().ByName("filename")
-	fd_AudioStemThread_Frame_signature = md_AudioStemThread_Frame.Fields().ByName("signature")
-	fd_AudioStemThread_Frame_cid = md_AudioStemThread_Frame.Fields().ByName("cid")
-	fd_AudioStemThread_Frame_hash = md_AudioStemThread_Frame.Fields().ByName("hash")
-	fd_AudioStemThread_Frame_validCount = md_AudioStemThread_Frame.Fields().ByName("validCount")
-	fd_AudioStemThread_Frame_invalidCount = md_AudioStemThread_Frame.Fields().ByName("invalidCount")
+	md_AudioStemThread_Stem = File_janction_audioStem_v1_types_proto.Messages().ByName("AudioStemThread").Messages().ByName("Stem")
+	fd_AudioStemThread_Stem_filename = md_AudioStemThread_Stem.Fields().ByName("filename")
+	fd_AudioStemThread_Stem_signature = md_AudioStemThread_Stem.Fields().ByName("signature")
+	fd_AudioStemThread_Stem_cid = md_AudioStemThread_Stem.Fields().ByName("cid")
+	fd_AudioStemThread_Stem_hash = md_AudioStemThread_Stem.Fields().ByName("hash")
+	fd_AudioStemThread_Stem_validCount = md_AudioStemThread_Stem.Fields().ByName("validCount")
+	fd_AudioStemThread_Stem_invalidCount = md_AudioStemThread_Stem.Fields().ByName("invalidCount")
 }
 
-var _ protoreflect.Message = (*fastReflection_AudioStemThread_Frame)(nil)
+var _ protoreflect.Message = (*fastReflection_AudioStemThread_Stem)(nil)
 
-type fastReflection_AudioStemThread_Frame AudioStemThread_Frame
+type fastReflection_AudioStemThread_Stem AudioStemThread_Stem
 
-func (x *AudioStemThread_Frame) ProtoReflect() protoreflect.Message {
-	return (*fastReflection_AudioStemThread_Frame)(x)
+func (x *AudioStemThread_Stem) ProtoReflect() protoreflect.Message {
+	return (*fastReflection_AudioStemThread_Stem)(x)
 }
 
-func (x *AudioStemThread_Frame) slowProtoReflect() protoreflect.Message {
+func (x *AudioStemThread_Stem) slowProtoReflect() protoreflect.Message {
 	mi := &file_janction_audioStem_v1_types_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -6411,43 +6519,43 @@ func (x *AudioStemThread_Frame) slowProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-var _fastReflection_AudioStemThread_Frame_messageType fastReflection_AudioStemThread_Frame_messageType
-var _ protoreflect.MessageType = fastReflection_AudioStemThread_Frame_messageType{}
+var _fastReflection_AudioStemThread_Stem_messageType fastReflection_AudioStemThread_Stem_messageType
+var _ protoreflect.MessageType = fastReflection_AudioStemThread_Stem_messageType{}
 
-type fastReflection_AudioStemThread_Frame_messageType struct{}
+type fastReflection_AudioStemThread_Stem_messageType struct{}
 
-func (x fastReflection_AudioStemThread_Frame_messageType) Zero() protoreflect.Message {
-	return (*fastReflection_AudioStemThread_Frame)(nil)
+func (x fastReflection_AudioStemThread_Stem_messageType) Zero() protoreflect.Message {
+	return (*fastReflection_AudioStemThread_Stem)(nil)
 }
-func (x fastReflection_AudioStemThread_Frame_messageType) New() protoreflect.Message {
-	return new(fastReflection_AudioStemThread_Frame)
+func (x fastReflection_AudioStemThread_Stem_messageType) New() protoreflect.Message {
+	return new(fastReflection_AudioStemThread_Stem)
 }
-func (x fastReflection_AudioStemThread_Frame_messageType) Descriptor() protoreflect.MessageDescriptor {
-	return md_AudioStemThread_Frame
+func (x fastReflection_AudioStemThread_Stem_messageType) Descriptor() protoreflect.MessageDescriptor {
+	return md_AudioStemThread_Stem
 }
 
 // Descriptor returns message descriptor, which contains only the protobuf
 // type information for the message.
-func (x *fastReflection_AudioStemThread_Frame) Descriptor() protoreflect.MessageDescriptor {
-	return md_AudioStemThread_Frame
+func (x *fastReflection_AudioStemThread_Stem) Descriptor() protoreflect.MessageDescriptor {
+	return md_AudioStemThread_Stem
 }
 
 // Type returns the message type, which encapsulates both Go and protobuf
 // type information. If the Go type information is not needed,
 // it is recommended that the message descriptor be used instead.
-func (x *fastReflection_AudioStemThread_Frame) Type() protoreflect.MessageType {
-	return _fastReflection_AudioStemThread_Frame_messageType
+func (x *fastReflection_AudioStemThread_Stem) Type() protoreflect.MessageType {
+	return _fastReflection_AudioStemThread_Stem_messageType
 }
 
 // New returns a newly allocated and mutable empty message.
-func (x *fastReflection_AudioStemThread_Frame) New() protoreflect.Message {
-	return new(fastReflection_AudioStemThread_Frame)
+func (x *fastReflection_AudioStemThread_Stem) New() protoreflect.Message {
+	return new(fastReflection_AudioStemThread_Stem)
 }
 
 // Interface unwraps the message reflection interface and
 // returns the underlying ProtoMessage interface.
-func (x *fastReflection_AudioStemThread_Frame) Interface() protoreflect.ProtoMessage {
-	return (*AudioStemThread_Frame)(x)
+func (x *fastReflection_AudioStemThread_Stem) Interface() protoreflect.ProtoMessage {
+	return (*AudioStemThread_Stem)(x)
 }
 
 // Range iterates over every populated field in an undefined order,
@@ -6455,40 +6563,40 @@ func (x *fastReflection_AudioStemThread_Frame) Interface() protoreflect.ProtoMes
 // Range returns immediately if f returns false.
 // While iterating, mutating operations may only be performed
 // on the current field descriptor.
-func (x *fastReflection_AudioStemThread_Frame) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
+func (x *fastReflection_AudioStemThread_Stem) Range(f func(protoreflect.FieldDescriptor, protoreflect.Value) bool) {
 	if x.Filename != "" {
 		value := protoreflect.ValueOfString(x.Filename)
-		if !f(fd_AudioStemThread_Frame_filename, value) {
+		if !f(fd_AudioStemThread_Stem_filename, value) {
 			return
 		}
 	}
 	if x.Signature != "" {
 		value := protoreflect.ValueOfString(x.Signature)
-		if !f(fd_AudioStemThread_Frame_signature, value) {
+		if !f(fd_AudioStemThread_Stem_signature, value) {
 			return
 		}
 	}
 	if x.Cid != "" {
 		value := protoreflect.ValueOfString(x.Cid)
-		if !f(fd_AudioStemThread_Frame_cid, value) {
+		if !f(fd_AudioStemThread_Stem_cid, value) {
 			return
 		}
 	}
 	if x.Hash != "" {
 		value := protoreflect.ValueOfString(x.Hash)
-		if !f(fd_AudioStemThread_Frame_hash, value) {
+		if !f(fd_AudioStemThread_Stem_hash, value) {
 			return
 		}
 	}
 	if x.ValidCount != int64(0) {
 		value := protoreflect.ValueOfInt64(x.ValidCount)
-		if !f(fd_AudioStemThread_Frame_validCount, value) {
+		if !f(fd_AudioStemThread_Stem_validCount, value) {
 			return
 		}
 	}
 	if x.InvalidCount != int64(0) {
 		value := protoreflect.ValueOfInt64(x.InvalidCount)
-		if !f(fd_AudioStemThread_Frame_invalidCount, value) {
+		if !f(fd_AudioStemThread_Stem_invalidCount, value) {
 			return
 		}
 	}
@@ -6505,25 +6613,25 @@ func (x *fastReflection_AudioStemThread_Frame) Range(f func(protoreflect.FieldDe
 // In other cases (aside from the nullable cases above),
 // a proto3 scalar field is populated if it contains a non-zero value, and
 // a repeated field is populated if it is non-empty.
-func (x *fastReflection_AudioStemThread_Frame) Has(fd protoreflect.FieldDescriptor) bool {
+func (x *fastReflection_AudioStemThread_Stem) Has(fd protoreflect.FieldDescriptor) bool {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
 		return x.Filename != ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
 		return x.Signature != ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
 		return x.Cid != ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
 		return x.Hash != ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
 		return x.ValidCount != int64(0)
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
 		return x.InvalidCount != int64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6533,25 +6641,25 @@ func (x *fastReflection_AudioStemThread_Frame) Has(fd protoreflect.FieldDescript
 // associated with the given field number.
 //
 // Clear is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_AudioStemThread_Frame) Clear(fd protoreflect.FieldDescriptor) {
+func (x *fastReflection_AudioStemThread_Stem) Clear(fd protoreflect.FieldDescriptor) {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
 		x.Filename = ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
 		x.Signature = ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
 		x.Cid = ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
 		x.Hash = ""
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
 		x.ValidCount = int64(0)
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
 		x.InvalidCount = int64(0)
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6561,31 +6669,31 @@ func (x *fastReflection_AudioStemThread_Frame) Clear(fd protoreflect.FieldDescri
 // the default value of a bytes scalar is guaranteed to be a copy.
 // For unpopulated composite types, it returns an empty, read-only view
 // of the value; to obtain a mutable reference, use Mutable.
-func (x *fastReflection_AudioStemThread_Frame) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_AudioStemThread_Stem) Get(descriptor protoreflect.FieldDescriptor) protoreflect.Value {
 	switch descriptor.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
 		value := x.Filename
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
 		value := x.Signature
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
 		value := x.Cid
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
 		value := x.Hash
 		return protoreflect.ValueOfString(value)
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
 		value := x.ValidCount
 		return protoreflect.ValueOfInt64(value)
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
 		value := x.InvalidCount
 		return protoreflect.ValueOfInt64(value)
 	default:
 		if descriptor.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", descriptor.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", descriptor.FullName()))
 	}
 }
 
@@ -6599,25 +6707,25 @@ func (x *fastReflection_AudioStemThread_Frame) Get(descriptor protoreflect.Field
 // empty, read-only value, then it panics.
 //
 // Set is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_AudioStemThread_Frame) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
+func (x *fastReflection_AudioStemThread_Stem) Set(fd protoreflect.FieldDescriptor, value protoreflect.Value) {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
 		x.Filename = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
 		x.Signature = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
 		x.Cid = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
 		x.Hash = value.Interface().(string)
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
 		x.ValidCount = value.Int()
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
 		x.InvalidCount = value.Int()
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", fd.FullName()))
 	}
 }
 
@@ -6631,60 +6739,60 @@ func (x *fastReflection_AudioStemThread_Frame) Set(fd protoreflect.FieldDescript
 // It panics if the field does not contain a composite type.
 //
 // Mutable is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_AudioStemThread_Frame) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_AudioStemThread_Stem) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
-		panic(fmt.Errorf("field filename of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
-		panic(fmt.Errorf("field signature of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
-		panic(fmt.Errorf("field cid of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
-		panic(fmt.Errorf("field hash of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
-		panic(fmt.Errorf("field validCount of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
-		panic(fmt.Errorf("field invalidCount of message janction.audioStem.v1.AudioStemThread.Frame is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
+		panic(fmt.Errorf("field filename of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
+		panic(fmt.Errorf("field signature of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
+		panic(fmt.Errorf("field cid of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
+		panic(fmt.Errorf("field hash of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
+		panic(fmt.Errorf("field validCount of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
+		panic(fmt.Errorf("field invalidCount of message janction.audioStem.v1.AudioStemThread.Stem is not mutable"))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", fd.FullName()))
 	}
 }
 
 // NewField returns a new value that is assignable to the field
 // for the given descriptor. For scalars, this returns the default value.
 // For lists, maps, and messages, this returns a new, empty, mutable value.
-func (x *fastReflection_AudioStemThread_Frame) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
+func (x *fastReflection_AudioStemThread_Stem) NewField(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
-	case "janction.audioStem.v1.AudioStemThread.Frame.filename":
+	case "janction.audioStem.v1.AudioStemThread.Stem.filename":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Frame.signature":
+	case "janction.audioStem.v1.AudioStemThread.Stem.signature":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Frame.cid":
+	case "janction.audioStem.v1.AudioStemThread.Stem.cid":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Frame.hash":
+	case "janction.audioStem.v1.AudioStemThread.Stem.hash":
 		return protoreflect.ValueOfString("")
-	case "janction.audioStem.v1.AudioStemThread.Frame.validCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.validCount":
 		return protoreflect.ValueOfInt64(int64(0))
-	case "janction.audioStem.v1.AudioStemThread.Frame.invalidCount":
+	case "janction.audioStem.v1.AudioStemThread.Stem.invalidCount":
 		return protoreflect.ValueOfInt64(int64(0))
 	default:
 		if fd.IsExtension() {
-			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Frame"))
+			panic(fmt.Errorf("proto3 declared messages do not support extensions: janction.audioStem.v1.AudioStemThread.Stem"))
 		}
-		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Frame does not contain field %s", fd.FullName()))
+		panic(fmt.Errorf("message janction.audioStem.v1.AudioStemThread.Stem does not contain field %s", fd.FullName()))
 	}
 }
 
 // WhichOneof reports which field within the oneof is populated,
 // returning nil if none are populated.
 // It panics if the oneof descriptor does not belong to this message.
-func (x *fastReflection_AudioStemThread_Frame) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
+func (x *fastReflection_AudioStemThread_Stem) WhichOneof(d protoreflect.OneofDescriptor) protoreflect.FieldDescriptor {
 	switch d.FullName() {
 	default:
-		panic(fmt.Errorf("%s is not a oneof field in janction.audioStem.v1.AudioStemThread.Frame", d.FullName()))
+		panic(fmt.Errorf("%s is not a oneof field in janction.audioStem.v1.AudioStemThread.Stem", d.FullName()))
 	}
 	panic("unreachable")
 }
@@ -6692,7 +6800,7 @@ func (x *fastReflection_AudioStemThread_Frame) WhichOneof(d protoreflect.OneofDe
 // GetUnknown retrieves the entire list of unknown fields.
 // The caller may only mutate the contents of the RawFields
 // if the mutated bytes are stored back into the message with SetUnknown.
-func (x *fastReflection_AudioStemThread_Frame) GetUnknown() protoreflect.RawFields {
+func (x *fastReflection_AudioStemThread_Stem) GetUnknown() protoreflect.RawFields {
 	return x.unknownFields
 }
 
@@ -6703,7 +6811,7 @@ func (x *fastReflection_AudioStemThread_Frame) GetUnknown() protoreflect.RawFiel
 // An empty RawFields may be passed to clear the fields.
 //
 // SetUnknown is a mutating operation and unsafe for concurrent use.
-func (x *fastReflection_AudioStemThread_Frame) SetUnknown(fields protoreflect.RawFields) {
+func (x *fastReflection_AudioStemThread_Stem) SetUnknown(fields protoreflect.RawFields) {
 	x.unknownFields = fields
 }
 
@@ -6715,7 +6823,7 @@ func (x *fastReflection_AudioStemThread_Frame) SetUnknown(fields protoreflect.Ra
 // message type, but the details are implementation dependent.
 // Validity is not part of the protobuf data model, and may not
 // be preserved in marshaling or other operations.
-func (x *fastReflection_AudioStemThread_Frame) IsValid() bool {
+func (x *fastReflection_AudioStemThread_Stem) IsValid() bool {
 	return x != nil
 }
 
@@ -6725,9 +6833,9 @@ func (x *fastReflection_AudioStemThread_Frame) IsValid() bool {
 // The returned methods type is identical to
 // "google.golang.org/protobuf/runtime/protoiface".Methods.
 // Consult the protoiface package documentation for details.
-func (x *fastReflection_AudioStemThread_Frame) ProtoMethods() *protoiface.Methods {
+func (x *fastReflection_AudioStemThread_Stem) ProtoMethods() *protoiface.Methods {
 	size := func(input protoiface.SizeInput) protoiface.SizeOutput {
-		x := input.Message.Interface().(*AudioStemThread_Frame)
+		x := input.Message.Interface().(*AudioStemThread_Stem)
 		if x == nil {
 			return protoiface.SizeOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6771,7 +6879,7 @@ func (x *fastReflection_AudioStemThread_Frame) ProtoMethods() *protoiface.Method
 	}
 
 	marshal := func(input protoiface.MarshalInput) (protoiface.MarshalOutput, error) {
-		x := input.Message.Interface().(*AudioStemThread_Frame)
+		x := input.Message.Interface().(*AudioStemThread_Stem)
 		if x == nil {
 			return protoiface.MarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6839,7 +6947,7 @@ func (x *fastReflection_AudioStemThread_Frame) ProtoMethods() *protoiface.Method
 		}, nil
 	}
 	unmarshal := func(input protoiface.UnmarshalInput) (protoiface.UnmarshalOutput, error) {
-		x := input.Message.Interface().(*AudioStemThread_Frame)
+		x := input.Message.Interface().(*AudioStemThread_Stem)
 		if x == nil {
 			return protoiface.UnmarshalOutput{
 				NoUnkeyedLiterals: input.NoUnkeyedLiterals,
@@ -6871,10 +6979,10 @@ func (x *fastReflection_AudioStemThread_Frame) ProtoMethods() *protoiface.Method
 			fieldNum := int32(wire >> 3)
 			wireType := int(wire & 0x7)
 			if wireType == 4 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: AudioStemThread_Frame: wiretype end group for non-group")
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: AudioStemThread_Stem: wiretype end group for non-group")
 			}
 			if fieldNum <= 0 {
-				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: AudioStemThread_Frame: illegal tag %d (wire type %d)", fieldNum, wire)
+				return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: AudioStemThread_Stem: illegal tag %d (wire type %d)", fieldNum, wire)
 			}
 			switch fieldNum {
 			case 1:
@@ -9316,22 +9424,22 @@ func (x *Worker) GetIpfsId() string {
 	return ""
 }
 
-// Video Rendering Task
+// Audio Stem Task
 // @cid the IPFS CID submitted by a task requester
 type AudioStemTask struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TaskId       string             `protobuf:"bytes,1,opt,name=taskId,proto3" json:"taskId,omitempty"`
-	Requester    string             `protobuf:"bytes,2,opt,name=requester,proto3" json:"requester,omitempty"`
-	Cid          string             `protobuf:"bytes,3,opt,name=cid,proto3" json:"cid,omitempty"`
-	StartFrame   int32              `protobuf:"varint,4,opt,name=start_frame,json=startFrame,proto3" json:"start_frame,omitempty"`
-	EndFrame     int32              `protobuf:"varint,5,opt,name=end_frame,json=endFrame,proto3" json:"end_frame,omitempty"`
-	ThreadAmount int32              `protobuf:"varint,6,opt,name=threadAmount,proto3" json:"threadAmount,omitempty"`
-	Completed    bool               `protobuf:"varint,7,opt,name=completed,proto3" json:"completed,omitempty"`
-	Reward       *v1beta1.Coin      `protobuf:"bytes,8,opt,name=reward,proto3" json:"reward,omitempty"`
-	Threads      []*AudioStemThread `protobuf:"bytes,9,rep,name=threads,proto3" json:"threads,omitempty"`
+	TaskId      string             `protobuf:"bytes,1,opt,name=taskId,proto3" json:"taskId,omitempty"`
+	Requester   string             `protobuf:"bytes,2,opt,name=requester,proto3" json:"requester,omitempty"`
+	Cid         string             `protobuf:"bytes,3,opt,name=cid,proto3" json:"cid,omitempty"`
+	AmountFiles int32              `protobuf:"varint,4,opt,name=amount_files,json=amountFiles,proto3" json:"amount_files,omitempty"`
+	Instrument  string             `protobuf:"bytes,5,opt,name=instrument,proto3" json:"instrument,omitempty"`
+	Mp3         bool               `protobuf:"varint,6,opt,name=mp3,proto3" json:"mp3,omitempty"`
+	Completed   bool               `protobuf:"varint,7,opt,name=completed,proto3" json:"completed,omitempty"`
+	Reward      *v1beta1.Coin      `protobuf:"bytes,8,opt,name=reward,proto3" json:"reward,omitempty"`
+	Threads     []*AudioStemThread `protobuf:"bytes,9,rep,name=threads,proto3" json:"threads,omitempty"`
 }
 
 func (x *AudioStemTask) Reset() {
@@ -9375,25 +9483,25 @@ func (x *AudioStemTask) GetCid() string {
 	return ""
 }
 
-func (x *AudioStemTask) GetStartFrame() int32 {
+func (x *AudioStemTask) GetAmountFiles() int32 {
 	if x != nil {
-		return x.StartFrame
+		return x.AmountFiles
 	}
 	return 0
 }
 
-func (x *AudioStemTask) GetEndFrame() int32 {
+func (x *AudioStemTask) GetInstrument() string {
 	if x != nil {
-		return x.EndFrame
+		return x.Instrument
 	}
-	return 0
+	return ""
 }
 
-func (x *AudioStemTask) GetThreadAmount() int32 {
+func (x *AudioStemTask) GetMp3() bool {
 	if x != nil {
-		return x.ThreadAmount
+		return x.Mp3
 	}
-	return 0
+	return false
 }
 
 func (x *AudioStemTask) GetCompleted() bool {
@@ -9424,15 +9532,16 @@ type AudioStemThread struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ThreadId             string                        `protobuf:"bytes,1,opt,name=thread_id,json=threadId,proto3" json:"thread_id,omitempty"`
-	TaskId               string                        `protobuf:"bytes,2,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	StartFrame           int64                         `protobuf:"varint,3,opt,name=start_frame,json=startFrame,proto3" json:"start_frame,omitempty"`
-	EndFrame             int64                         `protobuf:"varint,4,opt,name=end_frame,json=endFrame,proto3" json:"end_frame,omitempty"`
-	Completed            bool                          `protobuf:"varint,5,opt,name=completed,proto3" json:"completed,omitempty"`
-	Workers              []string                      `protobuf:"bytes,6,rep,name=workers,proto3" json:"workers,omitempty"`
-	Solution             *AudioStemThread_Solution     `protobuf:"bytes,7,opt,name=solution,proto3" json:"solution,omitempty"`
-	Validations          []*AudioStemThread_Validation `protobuf:"bytes,8,rep,name=validations,proto3" json:"validations,omitempty"`
-	AverageRenderSeconds int64                         `protobuf:"varint,9,opt,name=average_render_seconds,json=averageRenderSeconds,proto3" json:"average_render_seconds,omitempty"`
+	ThreadId           string                        `protobuf:"bytes,1,opt,name=thread_id,json=threadId,proto3" json:"thread_id,omitempty"`
+	TaskId             string                        `protobuf:"bytes,2,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
+	Filename           string                        `protobuf:"bytes,3,opt,name=filename,proto3" json:"filename,omitempty"`
+	Instrument         string                        `protobuf:"bytes,4,opt,name=instrument,proto3" json:"instrument,omitempty"`
+	Mp3                bool                          `protobuf:"varint,5,opt,name=mp3,proto3" json:"mp3,omitempty"`
+	Completed          bool                          `protobuf:"varint,6,opt,name=completed,proto3" json:"completed,omitempty"`
+	Workers            []string                      `protobuf:"bytes,7,rep,name=workers,proto3" json:"workers,omitempty"`
+	Solution           *AudioStemThread_Solution     `protobuf:"bytes,8,opt,name=solution,proto3" json:"solution,omitempty"`
+	Validations        []*AudioStemThread_Validation `protobuf:"bytes,9,rep,name=validations,proto3" json:"validations,omitempty"`
+	AverageStemSeconds int64                         `protobuf:"varint,10,opt,name=average_stem_seconds,json=averageStemSeconds,proto3" json:"average_stem_seconds,omitempty"`
 }
 
 func (x *AudioStemThread) Reset() {
@@ -9469,18 +9578,25 @@ func (x *AudioStemThread) GetTaskId() string {
 	return ""
 }
 
-func (x *AudioStemThread) GetStartFrame() int64 {
+func (x *AudioStemThread) GetFilename() string {
 	if x != nil {
-		return x.StartFrame
+		return x.Filename
 	}
-	return 0
+	return ""
 }
 
-func (x *AudioStemThread) GetEndFrame() int64 {
+func (x *AudioStemThread) GetInstrument() string {
 	if x != nil {
-		return x.EndFrame
+		return x.Instrument
 	}
-	return 0
+	return ""
+}
+
+func (x *AudioStemThread) GetMp3() bool {
+	if x != nil {
+		return x.Mp3
+	}
+	return false
 }
 
 func (x *AudioStemThread) GetCompleted() bool {
@@ -9511,9 +9627,9 @@ func (x *AudioStemThread) GetValidations() []*AudioStemThread_Validation {
 	return nil
 }
 
-func (x *AudioStemThread) GetAverageRenderSeconds() int64 {
+func (x *AudioStemThread) GetAverageStemSeconds() int64 {
 	if x != nil {
-		return x.AverageRenderSeconds
+		return x.AverageStemSeconds
 	}
 	return 0
 }
@@ -9721,11 +9837,11 @@ type AudioStemThread_Solution struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	ProposedBy string                   `protobuf:"bytes,1,opt,name=proposed_by,json=proposedBy,proto3" json:"proposed_by,omitempty"`
-	Frames     []*AudioStemThread_Frame `protobuf:"bytes,2,rep,name=frames,proto3" json:"frames,omitempty"`
-	PublicKey  string                   `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
-	Dir        string                   `protobuf:"bytes,4,opt,name=dir,proto3" json:"dir,omitempty"`
-	Accepted   bool                     `protobuf:"varint,5,opt,name=accepted,proto3" json:"accepted,omitempty"`
+	ProposedBy string                  `protobuf:"bytes,1,opt,name=proposed_by,json=proposedBy,proto3" json:"proposed_by,omitempty"`
+	Stems      []*AudioStemThread_Stem `protobuf:"bytes,2,rep,name=stems,proto3" json:"stems,omitempty"`
+	PublicKey  string                  `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	Dir        string                  `protobuf:"bytes,4,opt,name=dir,proto3" json:"dir,omitempty"`
+	Accepted   bool                    `protobuf:"varint,5,opt,name=accepted,proto3" json:"accepted,omitempty"`
 }
 
 func (x *AudioStemThread_Solution) Reset() {
@@ -9755,9 +9871,9 @@ func (x *AudioStemThread_Solution) GetProposedBy() string {
 	return ""
 }
 
-func (x *AudioStemThread_Solution) GetFrames() []*AudioStemThread_Frame {
+func (x *AudioStemThread_Solution) GetStems() []*AudioStemThread_Stem {
 	if x != nil {
-		return x.Frames
+		return x.Stems
 	}
 	return nil
 }
@@ -9788,10 +9904,10 @@ type AudioStemThread_Validation struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Validator string                   `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
-	Frames    []*AudioStemThread_Frame `protobuf:"bytes,2,rep,name=frames,proto3" json:"frames,omitempty"`
-	PublicKey string                   `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
-	IsReverse bool                     `protobuf:"varint,4,opt,name=is_reverse,json=isReverse,proto3" json:"is_reverse,omitempty"`
+	Validator string                  `protobuf:"bytes,1,opt,name=validator,proto3" json:"validator,omitempty"`
+	Stems     []*AudioStemThread_Stem `protobuf:"bytes,2,rep,name=stems,proto3" json:"stems,omitempty"`
+	PublicKey string                  `protobuf:"bytes,3,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	IsReverse bool                    `protobuf:"varint,4,opt,name=is_reverse,json=isReverse,proto3" json:"is_reverse,omitempty"`
 }
 
 func (x *AudioStemThread_Validation) Reset() {
@@ -9821,9 +9937,9 @@ func (x *AudioStemThread_Validation) GetValidator() string {
 	return ""
 }
 
-func (x *AudioStemThread_Validation) GetFrames() []*AudioStemThread_Frame {
+func (x *AudioStemThread_Validation) GetStems() []*AudioStemThread_Stem {
 	if x != nil {
-		return x.Frames
+		return x.Stems
 	}
 	return nil
 }
@@ -9842,7 +9958,7 @@ func (x *AudioStemThread_Validation) GetIsReverse() bool {
 	return false
 }
 
-type AudioStemThread_Frame struct {
+type AudioStemThread_Stem struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -9855,8 +9971,8 @@ type AudioStemThread_Frame struct {
 	InvalidCount int64  `protobuf:"varint,6,opt,name=invalidCount,proto3" json:"invalidCount,omitempty"`
 }
 
-func (x *AudioStemThread_Frame) Reset() {
-	*x = AudioStemThread_Frame{}
+func (x *AudioStemThread_Stem) Reset() {
+	*x = AudioStemThread_Stem{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_janction_audioStem_v1_types_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -9864,53 +9980,53 @@ func (x *AudioStemThread_Frame) Reset() {
 	}
 }
 
-func (x *AudioStemThread_Frame) String() string {
+func (x *AudioStemThread_Stem) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AudioStemThread_Frame) ProtoMessage() {}
+func (*AudioStemThread_Stem) ProtoMessage() {}
 
-// Deprecated: Use AudioStemThread_Frame.ProtoReflect.Descriptor instead.
-func (*AudioStemThread_Frame) Descriptor() ([]byte, []int) {
+// Deprecated: Use AudioStemThread_Stem.ProtoReflect.Descriptor instead.
+func (*AudioStemThread_Stem) Descriptor() ([]byte, []int) {
 	return file_janction_audioStem_v1_types_proto_rawDescGZIP(), []int{4, 2}
 }
 
-func (x *AudioStemThread_Frame) GetFilename() string {
+func (x *AudioStemThread_Stem) GetFilename() string {
 	if x != nil {
 		return x.Filename
 	}
 	return ""
 }
 
-func (x *AudioStemThread_Frame) GetSignature() string {
+func (x *AudioStemThread_Stem) GetSignature() string {
 	if x != nil {
 		return x.Signature
 	}
 	return ""
 }
 
-func (x *AudioStemThread_Frame) GetCid() string {
+func (x *AudioStemThread_Stem) GetCid() string {
 	if x != nil {
 		return x.Cid
 	}
 	return ""
 }
 
-func (x *AudioStemThread_Frame) GetHash() string {
+func (x *AudioStemThread_Stem) GetHash() string {
 	if x != nil {
 		return x.Hash
 	}
 	return ""
 }
 
-func (x *AudioStemThread_Frame) GetValidCount() int64 {
+func (x *AudioStemThread_Stem) GetValidCount() int64 {
 	if x != nil {
 		return x.ValidCount
 	}
 	return 0
 }
 
-func (x *AudioStemThread_Frame) GetInvalidCount() int64 {
+func (x *AudioStemThread_Stem) GetInvalidCount() int64 {
 	if x != nil {
 		return x.InvalidCount
 	}
@@ -10046,7 +10162,7 @@ var file_janction_audioStem_v1_types_proto_rawDesc = []byte{
 	0x6e, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x08, 0x77, 0x69, 0x6e, 0x6e, 0x69, 0x6e, 0x67,
 	0x73, 0x12, 0x29, 0x0a, 0x10, 0x72, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x64, 0x75, 0x72, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x03, 0x52, 0x0f, 0x72, 0x65, 0x6e,
-	0x64, 0x65, 0x72, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xe6, 0x02, 0x0a,
+	0x64, 0x65, 0x72, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0xd9, 0x02, 0x0a,
 	0x0d, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x16,
 	0x0a, 0x06, 0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
 	0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x12, 0x36, 0x0a, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73,
@@ -10054,130 +10170,129 @@ var file_janction_audioStem_v1_types_proto_rawDesc = []byte{
 	0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72,
 	0x69, 0x6e, 0x67, 0x52, 0x09, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x65, 0x72, 0x12, 0x10,
 	0x0a, 0x03, 0x63, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x63, 0x69, 0x64,
-	0x12, 0x1f, 0x0a, 0x0b, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x18,
-	0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x46, 0x72, 0x61, 0x6d,
-	0x65, 0x12, 0x1b, 0x0a, 0x09, 0x65, 0x6e, 0x64, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x18, 0x05,
-	0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x65, 0x6e, 0x64, 0x46, 0x72, 0x61, 0x6d, 0x65, 0x12, 0x22,
-	0x0a, 0x0c, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x41, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06,
-	0x20, 0x01, 0x28, 0x05, 0x52, 0x0c, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x41, 0x6d, 0x6f, 0x75,
-	0x6e, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x18,
-	0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64,
-	0x12, 0x31, 0x0a, 0x06, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b,
-	0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73, 0x65, 0x2e, 0x76,
-	0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x06, 0x72, 0x65, 0x77,
-	0x61, 0x72, 0x64, 0x12, 0x40, 0x0a, 0x07, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x73, 0x18, 0x09,
-	0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
-	0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64,
-	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x52, 0x07, 0x74, 0x68,
-	0x72, 0x65, 0x61, 0x64, 0x73, 0x22, 0xe9, 0x07, 0x0a, 0x0f, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53,
-	0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x68, 0x72,
-	0x65, 0x61, 0x64, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x74, 0x68,
-	0x72, 0x65, 0x61, 0x64, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x74, 0x61, 0x73, 0x6b, 0x5f, 0x69,
-	0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x61, 0x73, 0x6b, 0x49, 0x64, 0x12,
-	0x1f, 0x0a, 0x0b, 0x73, 0x74, 0x61, 0x72, 0x74, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x18, 0x03,
-	0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x73, 0x74, 0x61, 0x72, 0x74, 0x46, 0x72, 0x61, 0x6d, 0x65,
-	0x12, 0x1b, 0x0a, 0x09, 0x65, 0x6e, 0x64, 0x5f, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x18, 0x04, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x08, 0x65, 0x6e, 0x64, 0x46, 0x72, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a,
-	0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x77,
-	0x6f, 0x72, 0x6b, 0x65, 0x72, 0x73, 0x18, 0x06, 0x20, 0x03, 0x28, 0x09, 0x52, 0x07, 0x77, 0x6f,
-	0x72, 0x6b, 0x65, 0x72, 0x73, 0x12, 0x4b, 0x0a, 0x08, 0x73, 0x6f, 0x6c, 0x75, 0x74, 0x69, 0x6f,
-	0x6e, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69,
+	0x12, 0x21, 0x0a, 0x0c, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x5f, 0x66, 0x69, 0x6c, 0x65, 0x73,
+	0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0b, 0x61, 0x6d, 0x6f, 0x75, 0x6e, 0x74, 0x46, 0x69,
+	0x6c, 0x65, 0x73, 0x12, 0x1e, 0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e,
+	0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d,
+	0x65, 0x6e, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x6d, 0x70, 0x33, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08,
+	0x52, 0x03, 0x6d, 0x70, 0x33, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74,
+	0x65, 0x64, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65,
+	0x74, 0x65, 0x64, 0x12, 0x31, 0x0a, 0x06, 0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x18, 0x08, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x62, 0x61, 0x73,
+	0x65, 0x2e, 0x76, 0x31, 0x62, 0x65, 0x74, 0x61, 0x31, 0x2e, 0x43, 0x6f, 0x69, 0x6e, 0x52, 0x06,
+	0x72, 0x65, 0x77, 0x61, 0x72, 0x64, 0x12, 0x40, 0x0a, 0x07, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64,
+	0x73, 0x18, 0x09, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69,
 	0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e,
-	0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x2e,
-	0x53, 0x6f, 0x6c, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x73, 0x6f, 0x6c, 0x75, 0x74, 0x69,
-	0x6f, 0x6e, 0x12, 0x53, 0x0a, 0x0b, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x73, 0x18, 0x08, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e,
-	0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x2e,
-	0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0b, 0x76, 0x61, 0x6c, 0x69,
-	0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x34, 0x0a, 0x16, 0x61, 0x76, 0x65, 0x72, 0x61,
-	0x67, 0x65, 0x5f, 0x72, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x5f, 0x73, 0x65, 0x63, 0x6f, 0x6e, 0x64,
-	0x73, 0x18, 0x09, 0x20, 0x01, 0x28, 0x03, 0x52, 0x14, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x53, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x1a, 0xd8, 0x01,
-	0x0a, 0x08, 0x53, 0x6f, 0x6c, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x39, 0x0a, 0x0b, 0x70, 0x72,
-	0x6f, 0x70, 0x6f, 0x73, 0x65, 0x64, 0x5f, 0x62, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42,
-	0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72,
-	0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f,
-	0x73, 0x65, 0x64, 0x42, 0x79, 0x12, 0x44, 0x0a, 0x06, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x73, 0x18,
-	0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2c, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75,
-	0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x2e, 0x46, 0x72,
-	0x61, 0x6d, 0x65, 0x52, 0x06, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70,
-	0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x64, 0x69,
-	0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x64, 0x69, 0x72, 0x12, 0x1a, 0x0a, 0x08,
-	0x61, 0x63, 0x63, 0x65, 0x70, 0x74, 0x65, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08,
-	0x61, 0x63, 0x63, 0x65, 0x70, 0x74, 0x65, 0x64, 0x1a, 0xc8, 0x01, 0x0a, 0x0a, 0x56, 0x61, 0x6c,
-	0x69, 0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x36, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64,
-	0x61, 0x74, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14,
-	0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74,
-	0x72, 0x69, 0x6e, 0x67, 0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12,
-	0x44, 0x0a, 0x06, 0x66, 0x72, 0x61, 0x6d, 0x65, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x2c, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f,
-	0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65,
-	0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x2e, 0x46, 0x72, 0x61, 0x6d, 0x65, 0x52, 0x06, 0x66,
-	0x72, 0x61, 0x6d, 0x65, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f,
-	0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69,
-	0x63, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a, 0x0a, 0x69, 0x73, 0x5f, 0x72, 0x65, 0x76, 0x65, 0x72,
-	0x73, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x08, 0x52, 0x09, 0x69, 0x73, 0x52, 0x65, 0x76, 0x65,
-	0x72, 0x73, 0x65, 0x1a, 0xab, 0x01, 0x0a, 0x05, 0x46, 0x72, 0x61, 0x6d, 0x65, 0x12, 0x1a, 0x0a,
-	0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x69, 0x67,
-	0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x69,
-	0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x12, 0x10, 0x0a, 0x03, 0x63, 0x69, 0x64, 0x18, 0x03,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x63, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x68, 0x61, 0x73,
-	0x68, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x68, 0x61, 0x73, 0x68, 0x12, 0x1e, 0x0a,
-	0x0a, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28,
-	0x03, 0x52, 0x0a, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x22, 0x0a,
-	0x0c, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06, 0x20,
-	0x01, 0x28, 0x03, 0x52, 0x0c, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f, 0x75, 0x6e,
-	0x74, 0x22, 0x2b, 0x0a, 0x11, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61,
-	0x73, 0x6b, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x6e, 0x65, 0x78, 0x74, 0x49, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06, 0x6e, 0x65, 0x78, 0x74, 0x49, 0x64, 0x22, 0x7e,
-	0x0a, 0x14, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x65, 0x64, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74,
-	0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x12, 0x50, 0x0a, 0x0d,
-	0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61,
-	0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69,
-	0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52,
-	0x0d, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x22, 0xb9,
-	0x02, 0x0a, 0x0d, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x73,
-	0x12, 0x1a, 0x0a, 0x08, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x08, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x49, 0x64, 0x12, 0x45, 0x0a, 0x04,
-	0x6c, 0x6f, 0x67, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x6a, 0x61, 0x6e,
+	0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x52,
+	0x07, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x73, 0x22, 0xee, 0x07, 0x0a, 0x0f, 0x41, 0x75, 0x64,
+	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x12, 0x1b, 0x0a, 0x09,
+	0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x08, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x49, 0x64, 0x12, 0x17, 0x0a, 0x07, 0x74, 0x61, 0x73,
+	0x6b, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x74, 0x61, 0x73, 0x6b,
+	0x49, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x1e,
+	0x0a, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x0a, 0x69, 0x6e, 0x73, 0x74, 0x72, 0x75, 0x6d, 0x65, 0x6e, 0x74, 0x12, 0x10,
+	0x0a, 0x03, 0x6d, 0x70, 0x33, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x03, 0x6d, 0x70, 0x33,
+	0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x18, 0x06, 0x20,
+	0x01, 0x28, 0x08, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x6c, 0x65, 0x74, 0x65, 0x64, 0x12, 0x18,
+	0x0a, 0x07, 0x77, 0x6f, 0x72, 0x6b, 0x65, 0x72, 0x73, 0x18, 0x07, 0x20, 0x03, 0x28, 0x09, 0x52,
+	0x07, 0x77, 0x6f, 0x72, 0x6b, 0x65, 0x72, 0x73, 0x12, 0x4b, 0x0a, 0x08, 0x73, 0x6f, 0x6c, 0x75,
+	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x6a, 0x61, 0x6e,
 	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e,
-	0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x73,
-	0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x52, 0x04, 0x6c,
-	0x6f, 0x67, 0x73, 0x1a, 0xc4, 0x01, 0x0a, 0x0c, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65,
-	0x6d, 0x4c, 0x6f, 0x67, 0x12, 0x10, 0x0a, 0x03, 0x6c, 0x6f, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x03, 0x6c, 0x6f, 0x67, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74,
-	0x61, 0x6d, 0x70, 0x18, 0x03, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73,
-	0x74, 0x61, 0x6d, 0x70, 0x12, 0x56, 0x0a, 0x08, 0x73, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79,
-	0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x3a, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f,
-	0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41,
-	0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x73, 0x2e, 0x41, 0x75, 0x64,
-	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x2e, 0x53, 0x45, 0x56, 0x45, 0x52, 0x49,
-	0x54, 0x59, 0x52, 0x08, 0x73, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79, 0x22, 0x2c, 0x0a, 0x08,
-	0x53, 0x45, 0x56, 0x45, 0x52, 0x49, 0x54, 0x59, 0x12, 0x08, 0x0a, 0x04, 0x49, 0x4e, 0x46, 0x4f,
-	0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x53, 0x55, 0x43, 0x43, 0x45, 0x53, 0x53, 0x10, 0x01, 0x12,
-	0x09, 0x0a, 0x05, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x10, 0x02, 0x42, 0xe2, 0x01, 0x0a, 0x19, 0x63,
-	0x6f, 0x6d, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69,
-	0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x42, 0x0a, 0x54, 0x79, 0x70, 0x65, 0x73, 0x50,
-	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x43, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x64, 0x69,
-	0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2f, 0x76, 0x31, 0x3b,
-	0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x41,
-	0x58, 0xaa, 0x02, 0x15, 0x4a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x64,
-	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x56, 0x31, 0xca, 0x02, 0x15, 0x4a, 0x61, 0x6e, 0x63,
+	0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65,
+	0x61, 0x64, 0x2e, 0x53, 0x6f, 0x6c, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x08, 0x73, 0x6f, 0x6c,
+	0x75, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x53, 0x0a, 0x0b, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x73, 0x18, 0x09, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x31, 0x2e, 0x6a, 0x61, 0x6e,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e,
+	0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65,
+	0x61, 0x64, 0x2e, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x0b, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x12, 0x30, 0x0a, 0x14, 0x61, 0x76,
+	0x65, 0x72, 0x61, 0x67, 0x65, 0x5f, 0x73, 0x74, 0x65, 0x6d, 0x5f, 0x73, 0x65, 0x63, 0x6f, 0x6e,
+	0x64, 0x73, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x03, 0x52, 0x12, 0x61, 0x76, 0x65, 0x72, 0x61, 0x67,
+	0x65, 0x53, 0x74, 0x65, 0x6d, 0x53, 0x65, 0x63, 0x6f, 0x6e, 0x64, 0x73, 0x1a, 0xd5, 0x01, 0x0a,
+	0x08, 0x53, 0x6f, 0x6c, 0x75, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x39, 0x0a, 0x0b, 0x70, 0x72, 0x6f,
+	0x70, 0x6f, 0x73, 0x65, 0x64, 0x5f, 0x62, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18,
+	0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65,
+	0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x52, 0x0a, 0x70, 0x72, 0x6f, 0x70, 0x6f, 0x73,
+	0x65, 0x64, 0x42, 0x79, 0x12, 0x41, 0x0a, 0x05, 0x73, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x02, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61,
+	0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69,
+	0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65, 0x61, 0x64, 0x2e, 0x53, 0x74, 0x65, 0x6d,
+	0x52, 0x05, 0x73, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x1d, 0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69,
+	0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62,
+	0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x64, 0x69, 0x72, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x03, 0x64, 0x69, 0x72, 0x12, 0x1a, 0x0a, 0x08, 0x61, 0x63, 0x63, 0x65,
+	0x70, 0x74, 0x65, 0x64, 0x18, 0x05, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x61, 0x63, 0x63, 0x65,
+	0x70, 0x74, 0x65, 0x64, 0x1a, 0xc5, 0x01, 0x0a, 0x0a, 0x56, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74,
+	0x69, 0x6f, 0x6e, 0x12, 0x36, 0x0a, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x18, 0xd2, 0xb4, 0x2d, 0x14, 0x63, 0x6f, 0x73, 0x6d,
+	0x6f, 0x73, 0x2e, 0x41, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67,
+	0x52, 0x09, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x12, 0x41, 0x0a, 0x05, 0x73,
+	0x74, 0x65, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x6a, 0x61, 0x6e,
+	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e,
+	0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x68, 0x72, 0x65,
+	0x61, 0x64, 0x2e, 0x53, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x73, 0x74, 0x65, 0x6d, 0x73, 0x12, 0x1d,
+	0x0a, 0x0a, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x03, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x1d, 0x0a,
+	0x0a, 0x69, 0x73, 0x5f, 0x72, 0x65, 0x76, 0x65, 0x72, 0x73, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x08, 0x52, 0x09, 0x69, 0x73, 0x52, 0x65, 0x76, 0x65, 0x72, 0x73, 0x65, 0x1a, 0xaa, 0x01, 0x0a,
+	0x04, 0x53, 0x74, 0x65, 0x6d, 0x12, 0x1a, 0x0a, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x66, 0x69, 0x6c, 0x65, 0x6e, 0x61, 0x6d,
+	0x65, 0x12, 0x1c, 0x0a, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x12,
+	0x10, 0x0a, 0x03, 0x63, 0x69, 0x64, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x63, 0x69,
+	0x64, 0x12, 0x12, 0x0a, 0x04, 0x68, 0x61, 0x73, 0x68, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x04, 0x68, 0x61, 0x73, 0x68, 0x12, 0x1e, 0x0a, 0x0a, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f,
+	0x75, 0x6e, 0x74, 0x18, 0x05, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0a, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x22, 0x0a, 0x0c, 0x69, 0x6e, 0x76, 0x61, 0x6c, 0x69, 0x64,
+	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x03, 0x52, 0x0c, 0x69, 0x6e, 0x76,
+	0x61, 0x6c, 0x69, 0x64, 0x43, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x2b, 0x0a, 0x11, 0x41, 0x75, 0x64,
+	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x16,
+	0x0a, 0x06, 0x6e, 0x65, 0x78, 0x74, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x06,
+	0x6e, 0x65, 0x78, 0x74, 0x49, 0x64, 0x22, 0x7e, 0x0a, 0x14, 0x49, 0x6e, 0x64, 0x65, 0x78, 0x65,
+	0x64, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x12, 0x14,
+	0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69,
+	0x6e, 0x64, 0x65, 0x78, 0x12, 0x50, 0x0a, 0x0d, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65,
+	0x6d, 0x54, 0x61, 0x73, 0x6b, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x24, 0x2e, 0x6a, 0x61,
+	0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d,
+	0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x54, 0x61, 0x73,
+	0x6b, 0x42, 0x04, 0xc8, 0xde, 0x1f, 0x00, 0x52, 0x0d, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74,
+	0x65, 0x6d, 0x54, 0x61, 0x73, 0x6b, 0x22, 0xb9, 0x02, 0x0a, 0x0d, 0x41, 0x75, 0x64, 0x69, 0x6f,
+	0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x73, 0x12, 0x1a, 0x0a, 0x08, 0x74, 0x68, 0x72, 0x65,
+	0x61, 0x64, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x74, 0x68, 0x72, 0x65,
+	0x61, 0x64, 0x49, 0x64, 0x12, 0x45, 0x0a, 0x04, 0x6c, 0x6f, 0x67, 0x73, 0x18, 0x02, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x31, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75,
+	0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f,
+	0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x73, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74,
+	0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x52, 0x04, 0x6c, 0x6f, 0x67, 0x73, 0x1a, 0xc4, 0x01, 0x0a, 0x0c,
+	0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f, 0x67, 0x12, 0x10, 0x0a, 0x03,
+	0x6c, 0x6f, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6c, 0x6f, 0x67, 0x12, 0x1c,
+	0x0a, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x09, 0x74, 0x69, 0x6d, 0x65, 0x73, 0x74, 0x61, 0x6d, 0x70, 0x12, 0x56, 0x0a, 0x08,
+	0x73, 0x65, 0x76, 0x65, 0x72, 0x69, 0x74, 0x79, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x3a,
+	0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53,
+	0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d,
+	0x4c, 0x6f, 0x67, 0x73, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x4c, 0x6f,
+	0x67, 0x2e, 0x53, 0x45, 0x56, 0x45, 0x52, 0x49, 0x54, 0x59, 0x52, 0x08, 0x73, 0x65, 0x76, 0x65,
+	0x72, 0x69, 0x74, 0x79, 0x22, 0x2c, 0x0a, 0x08, 0x53, 0x45, 0x56, 0x45, 0x52, 0x49, 0x54, 0x59,
+	0x12, 0x08, 0x0a, 0x04, 0x49, 0x4e, 0x46, 0x4f, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x53, 0x55,
+	0x43, 0x43, 0x45, 0x53, 0x53, 0x10, 0x01, 0x12, 0x09, 0x0a, 0x05, 0x45, 0x52, 0x52, 0x4f, 0x52,
+	0x10, 0x02, 0x42, 0xe2, 0x01, 0x0a, 0x19, 0x63, 0x6f, 0x6d, 0x2e, 0x6a, 0x61, 0x6e, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x2e, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x76, 0x31,
+	0x42, 0x0a, 0x54, 0x79, 0x70, 0x65, 0x73, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x43,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6a, 0x61, 0x6e, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x6a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x61, 0x75, 0x64, 0x69, 0x6f,
+	0x53, 0x74, 0x65, 0x6d, 0x2f, 0x76, 0x31, 0x3b, 0x61, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65,
+	0x6d, 0x76, 0x31, 0xa2, 0x02, 0x03, 0x4a, 0x41, 0x58, 0xaa, 0x02, 0x15, 0x4a, 0x61, 0x6e, 0x63,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x2e, 0x56,
+	0x31, 0xca, 0x02, 0x15, 0x4a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x41, 0x75, 0x64,
+	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x5c, 0x56, 0x31, 0xe2, 0x02, 0x21, 0x4a, 0x61, 0x6e, 0x63,
 	0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x5c, 0x56,
-	0x31, 0xe2, 0x02, 0x21, 0x4a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5c, 0x41, 0x75, 0x64,
-	0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x5c, 0x56, 0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74,
-	0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17, 0x4a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e,
-	0x3a, 0x3a, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53, 0x74, 0x65, 0x6d, 0x3a, 0x3a, 0x56, 0x31, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x31, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x17,
+	0x4a, 0x61, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x3a, 0x41, 0x75, 0x64, 0x69, 0x6f, 0x53,
+	0x74, 0x65, 0x6d, 0x3a, 0x3a, 0x56, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -10207,7 +10322,7 @@ var file_janction_audioStem_v1_types_proto_goTypes = []interface{}{
 	(*Worker_Reputation)(nil),                // 9: janction.audioStem.v1.Worker.Reputation
 	(*AudioStemThread_Solution)(nil),         // 10: janction.audioStem.v1.AudioStemThread.Solution
 	(*AudioStemThread_Validation)(nil),       // 11: janction.audioStem.v1.AudioStemThread.Validation
-	(*AudioStemThread_Frame)(nil),            // 12: janction.audioStem.v1.AudioStemThread.Frame
+	(*AudioStemThread_Stem)(nil),             // 12: janction.audioStem.v1.AudioStemThread.Stem
 	(*AudioStemLogs_AudioStemLog)(nil),       // 13: janction.audioStem.v1.AudioStemLogs.AudioStemLog
 	(*v1beta1.Coin)(nil),                     // 14: cosmos.base.v1beta1.Coin
 }
@@ -10226,8 +10341,8 @@ var file_janction_audioStem_v1_types_proto_depIdxs = []int32{
 	13, // 11: janction.audioStem.v1.AudioStemLogs.logs:type_name -> janction.audioStem.v1.AudioStemLogs.AudioStemLog
 	14, // 12: janction.audioStem.v1.Worker.Reputation.staked:type_name -> cosmos.base.v1beta1.Coin
 	14, // 13: janction.audioStem.v1.Worker.Reputation.winnings:type_name -> cosmos.base.v1beta1.Coin
-	12, // 14: janction.audioStem.v1.AudioStemThread.Solution.frames:type_name -> janction.audioStem.v1.AudioStemThread.Frame
-	12, // 15: janction.audioStem.v1.AudioStemThread.Validation.frames:type_name -> janction.audioStem.v1.AudioStemThread.Frame
+	12, // 14: janction.audioStem.v1.AudioStemThread.Solution.stems:type_name -> janction.audioStem.v1.AudioStemThread.Stem
+	12, // 15: janction.audioStem.v1.AudioStemThread.Validation.stems:type_name -> janction.audioStem.v1.AudioStemThread.Stem
 	0,  // 16: janction.audioStem.v1.AudioStemLogs.AudioStemLog.severity:type_name -> janction.audioStem.v1.AudioStemLogs.AudioStemLog.SEVERITY
 	17, // [17:17] is the sub-list for method output_type
 	17, // [17:17] is the sub-list for method input_type
@@ -10375,7 +10490,7 @@ func file_janction_audioStem_v1_types_proto_init() {
 			}
 		}
 		file_janction_audioStem_v1_types_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AudioStemThread_Frame); i {
+			switch v := v.(*AudioStemThread_Stem); i {
 			case 0:
 				return &v.state
 			case 1:

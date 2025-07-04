@@ -11,7 +11,7 @@ var (
 	ErrWorkerTaskNotAvailable  = errors.Register(ModuleName, 12, "task is already completed")
 	ErrWorkerIncorrectStake    = errors.Register(ModuleName, 13, "staked coin is incorrect")
 
-	ErrInvalidAudioStemTask = errors.Register(ModuleName, 20, "invalid video rendering task")
+	ErrInvalidAudioStemTask = errors.Register(ModuleName, 20, "invalid audio stem task")
 
 	ErrInvalidSolution = errors.Register(ModuleName, 30, "proposed solution is invalid")
 

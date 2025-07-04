@@ -88,7 +88,7 @@ func UploadSolution(ctx context.Context, rootPath, threadId string) (string, err
 	sh := shell.NewShell("localhost:5001") // Replace with your IPFS API address
 
 	// Construct the path to the thread's output files
-	threadOutputPath := filepath.Join(rootPath, "renders", threadId, "output")
+	threadOutputPath := filepath.Join(rootPath, "audioStems", threadId, "htdemucs")
 
 	// Ensure the thread output path exists
 	info, err := os.Stat(threadOutputPath)

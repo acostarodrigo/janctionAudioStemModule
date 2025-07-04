@@ -54,16 +54,16 @@ message Worker {
 
 
 /*
-  Video Rendering Task
+  Audio Stem Task
   @cid the IPFS CID submitted by a task requester
 */
 message AudioStemTask {
   string taskId = 1;
   string requester = 2 [(cosmos_proto.scalar) = "cosmos.AddressString"];
   string cid = 3;
-  int32 start_frame = 4;
-  int32 end_frame = 5;
-  int32 threadAmount = 6;
+  int32 amount_files = 4;
+  string instrument = 5;
+  bool mp3 = 6;
   bool completed = 7;
   cosmos.base.v1beta1.Coin reward = 8;
   repeated AudioStemThread  threads = 9;
@@ -77,18 +77,19 @@ message AudioStemTask {
   message AudioStemThread {
     string thread_id = 1;
     string task_id = 2;
-    int64 start_frame = 3;
-    int64 end_frame = 4;
-    bool completed = 5;
-    repeated string workers = 6;
-    Solution solution = 7;
-    repeated Validation validations = 8;
-    int64 average_render_seconds = 9;
+    string filename = 3;
+    string instrument = 4;
+    bool mp3 = 5;
+    bool completed = 6;
+    repeated string workers = 7;
+    Solution solution = 8;
+    repeated Validation validations = 9;
+    int64 average_stem_seconds = 10;
     
 
     message Solution {
       string proposed_by = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
-      repeated Frame frames = 2;
+      repeated Stem stems = 2;
       string public_key = 3;
       string dir = 4;
       bool accepted = 5;
@@ -96,12 +97,12 @@ message AudioStemTask {
 
     message Validation {
       string validator = 1[(cosmos_proto.scalar) = "cosmos.AddressString"];
-      repeated Frame frames = 2;
+      repeated Stem stems = 2;
       string public_key = 3;
       bool is_reverse = 4;
     }
 
-    message Frame {
+    message Stem {
       string filename = 1;
       string signature = 2;
       string cid = 3;
@@ -111,12 +112,12 @@ message AudioStemTask {
     }
   }
 
-  // Stores information about the Video Rendering  task 
+  // Stores information about the Audio stem  task 
   message AudioStemTaskInfo {
     int64 nextId = 1;
   }
   
-  // Stores the Video Rendering Task with the index
+  // Stores the Audio stem Task with the index
   message IndexedAudioStemTask {
     string index = 1;
     AudioStemTask audioStemTask = 2 [(gogoproto.nullable) = false];
