@@ -159,9 +159,10 @@ func (t AudioStemThread) ProposeSolution(codec codec.Codec, alias, workerAddress
 }
 
 func (t AudioStemThread) SubmitVerification(codec codec.Codec, alias, workerAddress string, rootPath string, db *db.DB) error {
+
 	// we will verify any file we already have rendered.
 	db.UpdateThread(t.ThreadId, true, true, true, true, true, true, false, false)
-	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs", t.Cid)
 	files := vm.CountFilesInDirectory(output)
 	if files == 0 {
 		audioStemLogger.Logger.Error("found %v files in path %s", files, output)

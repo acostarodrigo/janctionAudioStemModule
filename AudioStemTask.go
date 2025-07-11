@@ -16,9 +16,9 @@ func GetEmptyAudioStemTaskList() []IndexedAudioStemTask {
 	return []IndexedAudioStemTask{}
 }
 
-func (t *AudioStemTask) GenerateThreads(taskId string) (res []*AudioStemThread) {
+func (t *AudioStemTask) GenerateThreads(taskId string, cid string) (res []*AudioStemThread) {
 	for i := range t.AmountFiles {
-		thread := AudioStemThread{ThreadId: t.TaskId + strconv.FormatInt(int64(i), 10), TaskId: taskId, Instrument: t.Instrument, Mp3: t.Mp3}
+		thread := AudioStemThread{ThreadId: t.TaskId + strconv.FormatInt(int64(i), 10), TaskId: taskId, Instrument: t.Instrument, Mp3: t.Mp3, Cid: cid}
 		res = append(res, &thread)
 	}
 	return res

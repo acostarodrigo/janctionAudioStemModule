@@ -77,14 +77,15 @@ message AudioStemTask {
   message AudioStemThread {
     string thread_id = 1;
     string task_id = 2;
-    string filename = 3;
-    string instrument = 4;
-    bool mp3 = 5;
-    bool completed = 6;
-    repeated string workers = 7;
-    Solution solution = 8;
-    repeated Validation validations = 9;
-    int64 average_stem_seconds = 10;
+    string cid = 3;
+    string filename = 4;
+    string instrument = 5;
+    bool mp3 = 6;
+    bool completed = 7;
+    repeated string workers = 8;
+    Solution solution = 9;
+    repeated Validation validations = 10;
+    int64 average_stem_seconds = 11;
     
 
     message Solution {

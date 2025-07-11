@@ -57,7 +57,7 @@ func (ms msgServer) CreateAudioStemTask(ctx context.Context, msg *audioStem.MsgC
 	ms.k.AudioStemTaskInfo.Set(ctx, audioStem.AudioStemTaskInfo{NextId: nextId})
 
 	videoTask := audioStem.AudioStemTask{TaskId: taskId, Requester: msg.Creator, Cid: msg.Cid, AmountFiles: msg.AmountFiles, Instrument: msg.Instrument, Completed: false, Mp3: msg.Mp3, Reward: msg.Reward}
-	threads := videoTask.GenerateThreads(taskId)
+	threads := videoTask.GenerateThreads(taskId, msg.Cid)
 	videoTask.Threads = threads
 
 	// the module will keep the reward to be distributed later
