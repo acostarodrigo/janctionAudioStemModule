@@ -75,7 +75,7 @@ func (t *AudioStemThread) StartWork(ctx context.Context, worker string, cid stri
 			return nil
 		}
 		files, _ := os.ReadDir(rendersPath)
-		if len(files) != 4 {
+		if len(files) != 1 {
 			db.UpdateThread(t.ThreadId, true, true, false, false, false, false, false, false)
 			audioStemLogger.Logger.Error("Not the amount we expected. retrying. Amount of files %v", len(files))
 			return nil

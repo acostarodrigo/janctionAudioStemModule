@@ -5,9 +5,9 @@ import "cosmossdk.io/collections"
 const ModuleName = "audioStem"
 
 var (
-	ParamsKey                = collections.NewPrefix("AudioStemParams")
-	AudioStemTaskKey         = collections.NewPrefix("AudioStemTaskList/value/")
-	WorkerKey                = collections.NewPrefix("AudioStemWorker")
+	ParamsKey                = collections.NewPrefix("audioStemParams")
+	AudioStemTaskKey         = collections.NewPrefix("audioStemTaskList/value/")
+	WorkerKey                = collections.NewPrefix("audioStemWorker")
 	TaskInfoKey              = collections.NewPrefix(0)
 	PendingAudioStemTasksKey = collections.NewPrefix(1)
 )

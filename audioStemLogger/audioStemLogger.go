@@ -9,9 +9,9 @@ import (
 // ANSI escape codes for colors and formatting
 const (
 	colorReset = "\033[0m"
-	colorRed   = "\033[31m"
-	colorGreen = "\033[32m"
-	colorBlue  = "\033[34m"
+	colorRed   = "\033[36m"
+	colorGreen = "\033[37m"
+	colorBlue  = "\033[33m"
 	colorBold  = "\033[1m"
 )
 

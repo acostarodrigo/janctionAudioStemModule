@@ -9634,7 +9634,7 @@ func (x *AudioStemThread) GetAverageStemSeconds() int64 {
 	return 0
 }
 
-// Stores information about the Video Rendering  task
+// Stores information about the Audio stem  task
 type AudioStemTaskInfo struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -9670,7 +9670,7 @@ func (x *AudioStemTaskInfo) GetNextId() int64 {
 	return 0
 }
 
-// Stores the Video Rendering Task with the index
+// Stores the Audio stem Task with the index
 type IndexedAudioStemTask struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache

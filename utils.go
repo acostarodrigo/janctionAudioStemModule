@@ -4,11 +4,14 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	fmt "fmt"
-	"image"
+	io "io"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/go-audio/wav"
+	"github.com/hajimehoshi/go-mp3"
 
 	"github.com/janction/audioStem/audioStemLogger"
 )
@@ -99,45 +102,53 @@ func FromFramesToCli(frames map[string]AudioStemThread_Stem) []string {
 
 // CalculateFileHash calculates the SHA-256 hash of a given file.
 func CalculateFileHash(filePath string) (string, error) {
-	hash, err := calculateImagePixelHash(filePath)
+	hash, err := calculateAudioSampleHash(filePath)
 	if err != nil {
 		return "", err
 	}
 	return hash, nil
 }
 
-// CalculateImagePixelHash computes the SHA-256 hash of an image based only on pixel values.
-func calculateImagePixelHash(filePath string) (string, error) {
+func calculateAudioSampleHash(filePath string) (string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
-	// Decode the image
-	img, format, err := image.Decode(file)
-	if err != nil {
-		return "", fmt.Errorf("failed to decode image: %w", err)
-	}
-
-	fmt.Println("Image format:", format) // Debugging purpose
-
-	// Convert image pixels to a byte slice
-	bounds := img.Bounds()
-	var pixelData []byte
-
-	// Extract RGB(A) pixel data
-	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
-		for x := bounds.Min.X; x < bounds.Max.X; x++ {
-			r, g, b, a := img.At(x, y).RGBA()
-			pixelData = append(pixelData,
-				byte(r>>8), byte(g>>8), byte(b>>8), byte(a>>8)) // Convert 16-bit values to 8-bit
-		}
-	}
-
-	// Compute SHA-256 hash
 	hasher := sha256.New()
-	hasher.Write(pixelData)
+
+	// Try WAV decoding first
+	file.Seek(0, io.SeekStart)
+	wavDecoder := wav.NewDecoder(file)
+
+	buf, err := wavDecoder.FullPCMBuffer()
+	if err == nil && buf != nil && len(buf.Data) > 0 {
+		for _, sample := range buf.Data {
+			hasher.Write([]byte{byte(sample >> 8), byte(sample)})
+		}
+		return hex.EncodeToString(hasher.Sum(nil)), nil
+	}
+
+	// Reset and fallback to MP3 only if WAV decoding failed
+	file.Seek(0, io.SeekStart)
+	mp3Decoder, err := mp3.NewDecoder(file)
+	if err != nil {
+		return "", fmt.Errorf("failed to decode WAV or MP3: %w", err)
+	}
+
+	bufBytes := make([]byte, 4096)
+	for {
+		n, err := mp3Decoder.Read(bufBytes)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			return "", fmt.Errorf("error reading MP3: %w", err)
+		}
+		hasher.Write(bufBytes[:n])
+	}
+
 	return hex.EncodeToString(hasher.Sum(nil)), nil
 }
 
