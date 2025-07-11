@@ -41,6 +41,7 @@ func IPFSGet(cid string, path string) error {
 
 // CalculateCIDs recursively computes the CIDs of a directory and its contents using `ipfs add --only-hash --recursive`
 func CalculateCIDs(dirPath string) (map[string]string, error) {
+	audioStemLogger.Logger.Debug("Calculating CID for directory %s", dirPath)
 	cidMap := make(map[string]string)
 
 	// Walk through the directory
@@ -59,6 +60,7 @@ func CalculateCIDs(dirPath string) (map[string]string, error) {
 
 		// Execute the IPFS add command with -Q and --only-hash to get the CID
 		cmd := exec.Command("ipfs", "add", "-Q", "--only-hash", path)
+		audioStemLogger.Logger.Debug("Calculating CID for file %s", path)
 		var out bytes.Buffer
 		cmd.Stdout = &out
 		cmd.Stderr = &out
@@ -72,6 +74,7 @@ func CalculateCIDs(dirPath string) (map[string]string, error) {
 		// Extract only the file name and add the result to the map
 		fileName := filepath.Base(path)
 		cid := strings.TrimSpace(out.String())
+		audioStemLogger.Logger.Debug("for file %s we got %s", path, cid)
 		cidMap[fileName] = cid
 		return nil
 	})

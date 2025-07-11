@@ -54,7 +54,7 @@ func ExecuteCli(args []string) error {
 	args = append(args, "--gas-adjustment")
 	args = append(args, "1.3")
 	cmd := exec.Command(executableName, args...)
-	audioStemLogger.Logger.Info("Executing %s", cmd.String())
+	audioStemLogger.Logger.Debug("Executing %s", cmd.String())
 
 	_, err := cmd.Output()
 

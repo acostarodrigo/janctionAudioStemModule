@@ -95,7 +95,7 @@ func (t *AudioStemThread) StartWork(ctx context.Context, worker string, cid stri
 func (t AudioStemThread) ProposeSolution(codec codec.Codec, alias, workerAddress string, rootPath string, db *db.DB) error {
 	db.UpdateThread(t.ThreadId, true, true, true, true, true, false, false, false)
 
-	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs", t.Cid)
 
 	hashes, err := GenerateDirectoryFileHashes(output)
 	if err != nil {
@@ -330,7 +330,7 @@ func calculateValidatorPayment(filesValidated, totalFilesValidated int, totalVal
 
 // Once validations are ready, we show blockchain the solution
 func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
-	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs")
+	output := path.Join(rootPath, "audioStems", t.ThreadId, "htdemucs", t.Cid)
 	cids, err := ipfs.CalculateCIDs(output)
 	if err != nil {
 		audioStemLogger.Logger.Error(err.Error())
@@ -341,6 +341,7 @@ func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
 	for filename, cid := range cids {
 		path := filepath.Join(output, filename)
 		hash, err := CalculateFileHash(path)
+		audioStemLogger.Logger.Debug("Revealing solution. Path: %s, filename: %s, cid: %s, hash:%s", path, filename, cid, hash)
 
 		if err != nil {
 			audioStemLogger.Logger.Error(err.Error())
@@ -360,6 +361,7 @@ func (t *AudioStemThread) RevealSolution(rootPath string, db *db.DB) error {
 	args = append(args, "--from")
 	args = append(args, t.Solution.ProposedBy)
 	args = append(args, "--yes")
+	audioStemLogger.Logger.Debug("Revealing solution. args: %s", args)
 	err = ExecuteCli(args)
 
 	if err != nil {

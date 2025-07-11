@@ -311,6 +311,32 @@ func (ms msgServer) RevealSolution(ctx context.Context, msg *audioStem.MsgReveal
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "worker is not working on thread")
 	}
 
+	// cids amount must be equal to the amount of frames
+	if len(msg.Stems) != 4 {
+		audioStemLogger.Logger.Error("invalid amount of stems for the solution")
+		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "invalid amount of cids for the solution")
+	}
+
+	solution := audioStem.FromCliToFrames(msg.Stems)
+	for _, frame := range solution {
+		idx := slices.IndexFunc(thread.Solution.Stems, func(f *audioStem.AudioStemThread_Stem) bool { return f.Filename == frame.Filename })
+		if idx < 0 {
+			audioStemLogger.Logger.Error("Unable to find frame with filename %s in solution", frame.String())
+			return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "frame %s not found in solution", frame)
+		}
+		// we reveal the solution
+		thread.Solution.Stems[idx].Cid = frame.Cid
+		thread.Solution.Stems[idx].Hash = frame.Hash
+	}
+
+	// We verify all frames in the solution have a CID revealed
+	for _, frame := range thread.Solution.Stems {
+		if frame.Cid == "" || frame.Hash == "" {
+			audioStemLogger.Logger.Error("Frame %s doesn't have a CID or Hash revelaed", frame.Filename)
+			return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "Frame %s doesn't have a CID or Hash revelaed", frame.Filename)
+		}
+	}
+
 	task.Threads[worker.CurrentThreadIndex] = thread
 	ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
 	return nil, nil
@@ -359,6 +385,24 @@ func (ms msgServer) SubmitValidation(ctx context.Context, msg *audioStem.MsgSubm
 	if !slices.Contains(thread.Workers, msg.Creator) {
 		audioStemLogger.Logger.Error("worker is not working on thread")
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidVerification.Error(), "worker is not working on thread")
+	}
+
+	var frames []*audioStem.AudioStemThread_Stem
+	for _, signatures := range msg.Signatures {
+		parts := strings.SplitN(signatures, "=", 2)
+
+		frame := audioStem.AudioStemThread_Stem{Filename: parts[0], Signature: parts[1]}
+		frames = append(frames, &frame)
+	}
+
+	validation := audioStem.AudioStemThread_Validation{Validator: msg.Creator, IsReverse: thread.IsReverse(worker.Address), Stems: frames, PublicKey: msg.PublicKey}
+	task.Threads[worker.CurrentThreadIndex].Validations = append(thread.Validations, &validation)
+	ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
+
+	// we release the worker since there is nothing else for him to do on this thread
+	if worker.Address != thread.Solution.ProposedBy {
+		worker.ReleaseValidator()
+		ms.k.Workers.Set(ctx, msg.Creator, worker)
 	}
 
 	return &audioStem.MsgSubmitValidationResponse{}, nil
