@@ -4,6 +4,7 @@ import (
 	io "io"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/cosmos/cosmos-sdk/types"
 	"github.com/janction/audioStem/audioStemLogger"
@@ -12,6 +13,8 @@ import (
 )
 
 func (w Worker) RegisterWorker(address string, stake types.Coin, db *db.DB) error {
+	time.Sleep(5 * time.Second) // Delay 5 seconds before registering
+
 	db.Addworker(address)
 	// Base arguments
 	args := []string{

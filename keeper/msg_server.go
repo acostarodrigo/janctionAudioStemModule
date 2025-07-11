@@ -4,11 +4,13 @@ import (
 	"context"
 	"slices"
 	"strconv"
+	"strings"
 
 	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ipfs/go-cid"
+	audioStemCrypto "github.com/janction/audioStem/crypto"
 
 	"github.com/janction/audioStem"
 	"github.com/janction/audioStem/audioStemLogger"
@@ -207,6 +209,51 @@ func (ms msgServer) ProposeSolution(ctx context.Context, msg *audioStem.MsgPropo
 	if task.Completed {
 		audioStemLogger.Logger.Error("Task %s is not valid to accept solutions", msg.TaskId)
 		return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "Task %s is not valid to accept solutions", msg.TaskId)
+	}
+
+	for i, v := range task.Threads {
+		// TODO threads might be better as map instead of slice
+		if v.ThreadId == msg.ThreadId {
+			if v.Solution != nil {
+				audioStemLogger.Logger.Error("thread %s already has a solution", msg.ThreadId)
+				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "thread %s already has a solution", msg.ThreadId)
+			}
+			// worker must be a valid registered worker in the thread with a solution
+			if !slices.Contains(v.Workers, msg.Creator) {
+				audioStemLogger.Logger.Error("Worker %s is not valid at thread %s", msg.Creator, msg.ThreadId)
+				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "Worker %s is not valid at thread %s", msg.Creator, msg.ThreadId)
+			}
+
+			// solution len must be equal to the frames generated
+			if len(msg.Signatures) != 4 {
+				audioStemLogger.Logger.Error("amount of files in solution is incorrect, %v ", len(msg.Signatures))
+				return nil, sdkerrors.ErrAppConfig.Wrapf(audioStem.ErrInvalidSolution.Error(), "amount of files in solution is incorrect, %v ", len(msg.Signatures))
+			}
+
+			// we have passed all validations, lets add the solution to the thread
+			var frames []*audioStem.AudioStemThread_Stem
+
+			for _, val := range msg.Signatures {
+				parts := strings.SplitN(val, "=", 2)
+
+				frame := audioStem.AudioStemThread_Stem{Filename: parts[0], Signature: parts[1]}
+				frames = append(frames, &frame)
+			}
+
+			_, err := audioStemCrypto.DecodePublicKeyFromCLI(msg.PublicKey)
+
+			if err != nil {
+				audioStemLogger.Logger.Error("unable to decode publicKey from msg %s: %s", msg.PublicKey, err.Error())
+				return nil, err
+			}
+			task.Threads[i].Solution = &audioStem.AudioStemThread_Solution{ProposedBy: msg.Creator, Stems: frames, PublicKey: msg.PublicKey}
+			err = ms.k.AudioStemTasks.Set(ctx, msg.TaskId, task)
+
+			if err != nil {
+				audioStemLogger.Logger.Error("unable to propose solution %s", err.Error())
+				return nil, err
+			}
+		}
 	}
 
 	return &audioStem.MsgProposeSolutionResponse{}, nil
