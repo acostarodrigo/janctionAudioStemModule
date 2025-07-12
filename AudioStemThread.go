@@ -251,7 +251,7 @@ func (t AudioStemThread) SubmitSolution(ctx context.Context, workerAddress, root
 	db.UpdateThread(t.ThreadId, true, true, true, true, true, true, true, true)
 
 	db.AddLogEntry(t.ThreadId, "Submiting solution to IPFS...", time.Now().Unix(), 0)
-	cid, err := ipfs.UploadSolution(ctx, rootPath, t.ThreadId)
+	cid, err := ipfs.UploadSolution(ctx, rootPath, t.ThreadId, t.Cid)
 	if err != nil {
 		db.UpdateThread(t.ThreadId, true, true, true, true, true, true, true, false)
 		audioStemLogger.Logger.Error(err.Error())

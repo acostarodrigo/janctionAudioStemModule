@@ -86,12 +86,12 @@ func CalculateCIDs(dirPath string) (map[string]string, error) {
 	return cidMap, nil
 }
 
-func UploadSolution(ctx context.Context, rootPath, threadId string) (string, error) {
+func UploadSolution(ctx context.Context, rootPath, threadId, cidFile string) (string, error) {
 	// Connect to the IPFS daemon
 	sh := shell.NewShell("localhost:5001") // Replace with your IPFS API address
 
 	// Construct the path to the thread's output files
-	threadOutputPath := filepath.Join(rootPath, "audioStems", threadId, "htdemucs")
+	threadOutputPath := filepath.Join(rootPath, "audioStems", threadId, "htdemucs", cidFile)
 
 	// Ensure the thread output path exists
 	info, err := os.Stat(threadOutputPath)

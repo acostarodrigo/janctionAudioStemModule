@@ -261,7 +261,7 @@ func (ms msgServer) ProposeSolution(ctx context.Context, msg *audioStem.MsgPropo
 
 // TODO Implement
 func (ms msgServer) RevealSolution(ctx context.Context, msg *audioStem.MsgRevealSolution) (*audioStem.MsgRevealSolutionResponse, error) {
-	audioStemLogger.Logger.Info("RevealSolution - creator: %s, taskId: %s, threadId: %s, frames: %s", msg.Creator, msg.TaskId, msg.ThreadId, msg.ThreadId)
+	audioStemLogger.Logger.Info("RevealSolution - creator: %s, taskId: %s, threadId: %s, stems: %s", msg.Creator, msg.TaskId, msg.ThreadId, msg.Stems)
 
 	// Solution must be from a worker on the thread
 	task, err := ms.k.AudioStemTasks.Get(ctx, msg.TaskId)
