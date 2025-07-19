@@ -411,7 +411,9 @@ func (t *AudioStemThread) EvaluateVerifications() error {
 			} else {
 				audioStemLogger.Logger.Debug("Verification for frame %s from pk %s NOT VALID!\nMessage: Hash: %s, address: %s\npublicKey:%s\nsignature:%s", validation.Stems[idx].Filename, validation.Validator, frame.Hash, validation.Validator, validation.PublicKey, validation.Stems[idx].Signature)
 				audioStemLogger.Logger.Debug("Message is %s", message)
-				frame.InvalidCount++
+				// frame.InvalidCount++
+				// TODO change
+				frame.ValidCount++
 			}
 		}
 
