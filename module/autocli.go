@@ -24,6 +24,14 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 					Use:       "get-pending-audio-stem-tasks",
 					Short:     "Gets the pending audio stem tasks",
 				},
+				{
+					RpcMethod: "GetWorker",
+					Use:       "get-worker worker",
+					Short:     "Gets a single worker",
+					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
+						{ProtoField: "worker"},
+					},
+				},
 			},
 		},
 		Tx: &autocliv1.ServiceCommandDescriptor{
